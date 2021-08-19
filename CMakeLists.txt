@@ -24,6 +24,7 @@ include(ExternalRealSense.cmake)
 include(ExternalOpenVINO.cmake)
 include(ExternalZlib.cmake)
 include(ExternalQt5.cmake)
+include(ExternalJKQTPlotter.cmake)
 
 file(GENERATE OUTPUT ${PROJECT_BINARY_DIR}/hasher.cmake CONTENT "
 	foreach(ARG ${ALL_PACKAGES})
