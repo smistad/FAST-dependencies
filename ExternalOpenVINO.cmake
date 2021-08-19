@@ -28,9 +28,8 @@ set(LIBs
 	onnx_importer
 	ngraph
 )
-# Add all licences
-create_package_code(
-"
+# TODO add all licences
+file(GENERATE OUTPUT ${INSTALL_DIR}package.cmake CONTENT "
 file(COPY ${SOURCE_DIR}/LICENSE DESTINATION ${POST_INSTALL_DIR}/licences/${NAME}/)
 file(COPY ${SOURCE_DIR}/inference-engine/include/ DESTINATION ${POST_INSTALL_DIR}/include/openvino/)
 file(COPY ${SOURCE_DIR}/ngraph/core/include/ngraph/ DESTINATION ${POST_INSTALL_DIR}/include/ngraph/)
@@ -91,7 +90,7 @@ set(SO_FILES
 	libmyriadPlugin.so
 	libngraph.so
 )
-# Add all licences
+# TODO add all licences
 file(GENERATE OUTPUT ${INSTALL_DIR}package.cmake CONTENT "
 file(COPY ${SOURCE_DIR}/LICENSE DESTINATION ${POST_INSTALL_DIR}/licences/${NAME}/)
 file(COPY ${SOURCE_DIR}/inference-engine/include/ DESTINATION ${POST_INSTALL_DIR}/include/openvino/)
