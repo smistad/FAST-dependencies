@@ -18,6 +18,7 @@ endif()
 # List all dependencies to build
 include(ExternalDCMTK.cmake)
 include(ExternalHDF5.cmake)
+include(ExternalZip.cmake)
 
 file(GENERATE OUTPUT ${PROJECT_BINARY_DIR}/hasher.cmake CONTENT "
 	foreach(ARG ${ALL_PACKAGES})

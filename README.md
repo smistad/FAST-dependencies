@@ -16,6 +16,7 @@ cmake ..
 ```bash
 cmake --build . --config Release -j8
 ```
+Warning: This will take a very long time.  
 All packages will be located in the build/dist/ folder.
 
 ### Build a specific dependency
