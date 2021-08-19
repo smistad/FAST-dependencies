@@ -1,6 +1,28 @@
 # Build DCMTK
 
 create_package_target(dcmtk 3.6.3)
+if(WIN32)
+create_package_code(
+	"
+	file(COPY ${INSTALL_DIR}/include/dcmtk DESTINATION ${POST_INSTALL_DIR}/include/)
+	file(COPY ${BUILD_DIR}/src/dcmtk/COPYRIGHT DESTINATION ${POST_INSTALL_DIR}/licences/dcmtk/)
+	file(COPY 
+		${INSTALL_DIR}/bin/libdcmdata.dll 
+	        ${INSTALL_DIR}/bin/libdcmimgle.dll
+	        ${INSTALL_DIR}/bin/liboflog.dll
+	        ${INSTALL_DIR}/bin/libofstd.dll
+		DESTINATION ${POST_INSTALL_DIR}/bin/
+	)
+	file(COPY 
+		${INSTALL_DIR}/lib/libdcmdata.lib
+	        ${INSTALL_DIR}/lib/libdcmimgle.lib
+	        ${INSTALL_DIR}/lib/liboflog.lib
+	        ${INSTALL_DIR}/lib/libofstd.lib
+		DESTINATION ${POST_INSTALL_DIR}/lib/
+	)
+	"
+)
+else(WIN32)
 create_package_code(
 	"
 	file(COPY ${INSTALL_DIR}/include/dcmtk DESTINATION ${POST_INSTALL_DIR}/include/)
@@ -11,6 +33,7 @@ create_package_code(
 	file(COPY ${INSTALL_DIR}/lib/libofstd.so DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
 	"
 )
+endif()
 
 set(MODULES ofstd oflog dcmdata dcmimgle)
 ExternalProject_Add(dcmtk

@@ -26,14 +26,17 @@ macro(create_package_target NAME VERSION)
 	set(BUILD_DIR ${TOP_BUILD_DIR}/${NAME}/)
 	set(INSTALL_DIR ${BUILD_DIR}/install/)
 	set(POST_INSTALL_DIR ${BUILD_DIR}/post_install/${NAME}/)
-	add_custom_target(${NAME}_package ALL 
+	set(FILENAME ${PACKAGE_DIR}/${NAME}_${VERSION}_${TOOLSET}.tar.xz)
+	# Split to avoid repacking all the time
+	add_custom_command(OUTPUT ${FILENAME}
 		COMMAND ${CMAKE_COMMAND} -P ${INSTALL_DIR}/package.cmake 
-		COMMAND ${CMAKE_COMMAND} -E tar "cfJ" "${PACKAGE_DIR}/${NAME}_${VERSION}_${TOOLSET}.tar.xz" "${POST_INSTALL_DIR}"
+		COMMAND ${CMAKE_COMMAND} -E tar "cfJ" "${FILENAME}" "${POST_INSTALL_DIR}"
 		COMMENT "Packaging ${NAME}"
 		DEPENDS ${NAME}
 	)
+	add_custom_target(${NAME}_package ALL DEPENDS ${FILENAME})
 	list(APPEND ALL_TARGETS ${NAME}_package)
-	list(APPEND ALL_PACKAGES ${PACKAGE_DIR}/${NAME}_${VERSION}_${TOOLSET}.tar.xz)
+	list(APPEND ALL_PACKAGES ${FILENAME})
 	#set(ALL_TARGETS ${ALL_TARGETS} PARENT_SCOPE)
 	#set(ALL_PACKAGES ${ALL_PACKAGES} PARENT_SCOPE)
 endmacro()
