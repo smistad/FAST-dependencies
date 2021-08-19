@@ -18,7 +18,8 @@ cmake --build . --config Release -j8
 ```
 All packages will be located in the build/dist/ folder.
 
-### Build a specific dependecy <name>
+### Build a specific dependency
+To build dependency _name_:
 ```bash
 cmake --build . -t <name>_package --config Release -j8
 ```
@@ -28,4 +29,9 @@ The package will be located in the build/dist/ folder.
 SHA hashes can be generated with:
 ```bash
 cmake --build . -t hash_all
+```
+
+### Clean the build of a specific dependency
+```bash
+rm -Rf build_output/<name>/
 ```

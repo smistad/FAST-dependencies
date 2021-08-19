@@ -1,14 +1,21 @@
 # Build DCMTK
 
-set(MODULES ofstd oflog dcmdata dcmimgle)
-set(NAME dcmtk)
-set(VERSION 3.6.3)
-set(INSTALL_DIR ${BUILD_DIR}/${NAME}/install/)
-set(POST_INSTALL_DIR ${BUILD_DIR}/${NAME}/post_install/${NAME}/)
+create_package_target(dcmtk 3.6.3)
+create_package_code(
+	"
+	file(COPY ${INSTALL_DIR}/include/dcmtk DESTINATION ${POST_INSTALL_DIR}/include/)
+	file(COPY ${BUILD_DIR}/src/dcmtk/COPYRIGHT DESTINATION ${POST_INSTALL_DIR}/licences/dcmtk/)
+	file(COPY ${INSTALL_DIR}/lib/libdcmdata.so DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+	file(COPY ${INSTALL_DIR}/lib/libdcmimgle.so DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+	file(COPY ${INSTALL_DIR}/lib/liboflog.so DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+	file(COPY ${INSTALL_DIR}/lib/libofstd.so DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+	"
+)
 
+set(MODULES ofstd oflog dcmdata dcmimgle)
 ExternalProject_Add(dcmtk
-        PREFIX ${BUILD_DIR}/dcmtk
-        BINARY_DIR ${BUILD_DIR}/dcmtk
+        PREFIX ${BUILD_DIR}
+        BINARY_DIR ${BUILD_DIR}
         GIT_REPOSITORY "https://github.com/DCMTK/dcmtk.git"
 	GIT_TAG "DCMTK-${VERSION}"
         CMAKE_ARGS
@@ -27,15 +34,4 @@ ExternalProject_Add(dcmtk
 	    -DCMAKE_INSTALL_PREFIX:STRING=${INSTALL_DIR}
 )
 
-# Collect files 
-file(GENERATE OUTPUT ${INSTALL_DIR}package.cmake CONTENT "
-	file(COPY ${INSTALL_DIR}/include/dcmtk DESTINATION ${POST_INSTALL_DIR}/${NAME}/include/)
-	file(COPY ${BUILD_DIR}/${NAME}/src/dcmtk/COPYRIGHT DESTINATION ${POST_INSTALL_DIR}/licences/dcmtk/)
-	file(COPY ${INSTALL_DIR}/lib/libdcmdata.so DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
-	file(COPY ${INSTALL_DIR}/lib/libdcmimgle.so DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
-	file(COPY ${INSTALL_DIR}/lib/liboflog.so DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
-	file(COPY ${INSTALL_DIR}/lib/libofstd.so DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
-	"
-)
 
-create_package_target(dcmtk ${VERSION})

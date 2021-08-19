@@ -4,7 +4,7 @@ project(FAST-dependencies)
 include(ExternalProject)
 include(Macros.cmake)
 
-set(BUILD_DIR ${PROJECT_BINARY_DIR}/build_output/) # Where to build the dependencies
+set(TOP_BUILD_DIR ${PROJECT_BINARY_DIR}/build_output/) # Where to build the dependencies
 set(PACKAGE_DIR ${PROJECT_BINARY_DIR}/dist/) # Where to put packages
 file(MAKE_DIRECTORY ${PACKAGE_DIR})
 
