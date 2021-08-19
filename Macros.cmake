@@ -22,8 +22,8 @@ ENDMACRO (CHECK_GLIBC_VERSION)
 
 macro(create_package_target NAME VERSION)
 	add_custom_target(${NAME}_package ALL 
-		COMMAND ${CMAKE_COMMAND} -P ${INSTALL_DIR}/${NAME}/package.cmake 
-		COMMAND ${CMAKE_COMMAND} -E tar "cfJ" "${PACKAGE_DIR}/${NAME}_${VERSION}_${TOOLSET}.tar.xz" "${POST_INSTALL_DIR}/${NAME}/"
+		COMMAND ${CMAKE_COMMAND} -P ${BUILD_DIR}/${NAME}/install/package.cmake 
+		COMMAND ${CMAKE_COMMAND} -E tar "cfJ" "${PACKAGE_DIR}/${NAME}_${VERSION}_${TOOLSET}.tar.xz" "${BUILD_DIR}/${NAME}/post_install/${NAME}"
 		COMMENT "Packaging ${NAME}"
 		DEPENDS ${NAME}
 	)
