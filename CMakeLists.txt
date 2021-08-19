@@ -19,6 +19,10 @@ endif()
 include(ExternalDCMTK.cmake)
 include(ExternalHDF5.cmake)
 include(ExternalZip.cmake)
+include(ExternalOpenIGTLink.cmake)
+include(ExternalRealSense.cmake)
+include(ExternalOpenVINO.cmake)
+include(ExternalZlib.cmake)
 
 file(GENERATE OUTPUT ${PROJECT_BINARY_DIR}/hasher.cmake CONTENT "
 	foreach(ARG ${ALL_PACKAGES})

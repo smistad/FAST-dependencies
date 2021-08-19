@@ -2,6 +2,21 @@
 
 This project is a CMake super build for dependencies of [FAST](https://github.com/smistad/FAST/).
 
+## Dependency list
+* Zlib
+* Zip
+* DCMTK
+* HDF5
+* OpenIGTLink
+* OpenVINO
+* Qt5
+* TensorFlow
+* OpenSlide
+* libtiff
+* libjpeg
+* RealSense
+* JKQTPlotter
+
 ## Usage
 
 ### Setup
