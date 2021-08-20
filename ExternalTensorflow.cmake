@@ -1,6 +1,7 @@
 # Build TensorFlow
 
 create_package_target(tensorflow 2.4.0)
+create_package_code(" ")
 
 if(WIN32)
     # Use CMake to build tensorflow on windows
@@ -13,13 +14,13 @@ if(WIN32)
 		cd ${SOURCE_DIR} &&
                 bazel build --config=opt --jobs=${FAST_TensorFlow_JOBS} //tensorflow:tensorflow_cc.dll
         )
-        )
     else()
         find_package(CUDA)
         set(CONFIGURE_SCRIPT ${PROJECT_SOURCE_DIR}/TensorflowConfigureCUDA.bat ${CUDA_TOOLKIT_ROOT_DIR}  ${CUDA_VERSION_STRING})
         set(BUILD_COMMAND echo "Building tensorflow with bazel and CUDA GPU support" &&
 		cd ${SOURCE_DIR} &&
                 bazel build --config opt --config=cuda --jobs=${FAST_TensorFlow_JOBS} //tensorflow:tensorflow_cc.dll
+	)
     endif()
     ExternalProject_Add(${NAME}
      	    PREFIX ${BUILD_DIR}
@@ -100,7 +101,7 @@ else(WIN32)
 		cd ${SOURCE_DIR}/bazel-bin/ &&
 		bash -c "find tensorflow/ -name '*.h' | xargs cp -f --parents -t ${POST_INSTALL_DIR}/include/" &&
                 echo "Installing tensorflow third_party headers" &&
-		cp -rf ${SOURCe_DIR}/third_party/ ${POST_INSTALL_DIR}/include/ &&
+		cp -rf ${SOURCE_DIR}/third_party/ ${POST_INSTALL_DIR}/include/ &&
                 echo "Installing protobuf headers" &&
 		bash -c "cp $(readlink -f ${SOURCE_DIR}/bazel-out/)/../../../external/com_google_protobuf/src/google/ ${POST_INSTALL_DIR}/include/ -Rf" &&
                 echo "Installing absl headers" &&

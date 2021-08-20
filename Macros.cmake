@@ -31,7 +31,8 @@ macro(create_package_target NAME VERSION)
 	# Split to avoid repacking all the time
 	add_custom_command(OUTPUT ${FILENAME}
 		COMMAND ${CMAKE_COMMAND} -P ${INSTALL_DIR}/package.cmake 
-		COMMAND ${CMAKE_COMMAND} -E tar "cfJ" "${FILENAME}" "${POST_INSTALL_DIR}"
+		COMMAND ${CMAKE_COMMAND} -E tar "cfJ" "${FILENAME}" "*"
+		WORKING_DIRECTORY ${POST_INSTALL_DIR}
 		COMMENT "Packaging ${NAME}"
 		DEPENDS ${NAME}
 	)
