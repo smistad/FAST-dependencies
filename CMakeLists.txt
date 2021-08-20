@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
 project(FAST-dependencies)
 
+option(FAST_TensorFlow_JOBS "Nr of parallel jobs to use for bazel build of TensorFlow. Increasing this will use more RAM." 4)
+option(FAST_TensorFlow_CPU_ONLY "Do not use CUDA for building TensorFlow" OFF)
+
 include(ExternalProject)
 include(Macros.cmake)
 
@@ -25,6 +28,7 @@ include(ExternalOpenVINO.cmake)
 include(ExternalZlib.cmake)
 include(ExternalQt5.cmake)
 include(ExternalJKQTPlotter.cmake)
+include(ExternalTensorflow.cmake)
 
 file(GENERATE OUTPUT ${PROJECT_BINARY_DIR}/hasher.cmake CONTENT "
 	foreach(ARG ${ALL_PACKAGES})
