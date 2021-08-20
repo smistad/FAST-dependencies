@@ -5,6 +5,9 @@ if(WIN32)
 create_package_code(
 	"
 	file(COPY ${INSTALL_DIR}/include/jkqtplotter DESTINATION ${POST_INSTALL_DIR}/include/)
+	file(COPY ${INSTALL_DIR}/include/jkqtmathtext DESTINATION ${POST_INSTALL_DIR}/include/)
+	file(COPY ${INSTALL_DIR}/include/jkqtfastplotter DESTINATION ${POST_INSTALL_DIR}/include/)
+	file(COPY ${INSTALL_DIR}/include/jkqtcommon DESTINATION ${POST_INSTALL_DIR}/include/)
 	file(COPY ${SOURCE_DIR}/LICENSE DESTINATION ${POST_INSTALL_DIR}/licences/${NAME}/)
 	file(COPY ${INSTALL_DIR}/lib/JKQTCommonSharedLib_Release.lib DESTINATION ${POST_INSTALL_DIR}/lib/)
 	file(COPY ${INSTALL_DIR}/lib/JKQTPlotterSharedLib_Release.so DESTINATION ${POST_INSTALL_DIR}/lib/)
@@ -12,16 +15,21 @@ create_package_code(
 	file(COPY ${INSTALL_DIR}/bin/JKQTCommonSharedLib_Release.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
 	file(COPY ${INSTALL_DIR}/bin/JKQTPlotterSharedLib_Release.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
 	file(COPY ${INSTALL_DIR}/bin/JKQTFastPlotterSharedLib_Release.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
+	file(COPY ${INSTALL_DIR}/bin/JKQTMathTextSharedLib_Release.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
 	"
 )
 else()
 create_package_code(
 	"
 	file(COPY ${INSTALL_DIR}/include/jkqtplotter DESTINATION ${POST_INSTALL_DIR}/include/)
+	file(COPY ${INSTALL_DIR}/include/jkqtmathtext DESTINATION ${POST_INSTALL_DIR}/include/)
+	file(COPY ${INSTALL_DIR}/include/jkqtfastplotter DESTINATION ${POST_INSTALL_DIR}/include/)
+	file(COPY ${INSTALL_DIR}/include/jkqtcommon DESTINATION ${POST_INSTALL_DIR}/include/)
 	file(COPY ${SOURCE_DIR}/LICENSE DESTINATION ${POST_INSTALL_DIR}/licences/${NAME}/)
 	file(COPY ${INSTALL_DIR}/lib/libJKQTCommonSharedLib_Release.so DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
 	file(COPY ${INSTALL_DIR}/lib/libJKQTPlotterSharedLib_Release.so DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
 	file(COPY ${INSTALL_DIR}/lib/libJKQTFastPlotterSharedLib_Release.so DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+	file(COPY ${INSTALL_DIR}/lib/libJKQTMathTextSharedLib_Release.so DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
 	"
 )
 endif()

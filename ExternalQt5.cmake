@@ -53,15 +53,16 @@ set(MODULES_TO_EXCLUDE
         -skip qtxmlpatterns
         )
 set(LIBS 
-		Qt5Core
-		Qt5Gui
-		Qt5Widgets
-		Qt5OpenGL
-		Qt5Multimedia
-		Qt5MultimediaWidgets
-		Qt5PrintSupport
-		Qt5SerialPort
-	)
+	Qt5Core
+	Qt5Gui
+	Qt5Widgets
+	Qt5OpenGL
+	Qt5Multimedia
+	Qt5MultimediaWidgets
+	Qt5PrintSupport
+	Qt5SerialPort
+	Qt5Network
+)
 if(WIN32)
 	#set(BUILD_COMMAND set CL=/MP; nmake)
 	set(BUILD_COMMAND nmake)
@@ -89,12 +90,14 @@ if(WIN32)
 	foreach(ARG $\{FILES\})
 	    file(COPY $\{ARG\} DESTINATION ${POST_INSTALL_DIR}/licences/qt5/)
 	endforeach()
-	foreach(ARG ${INCLUDE_DIRS})
-	    file(COPY ${INSTALL_DIR}/include/$\{ARG\} DESTINATION ${POST_INSTALL_DIR}/include/)
+	file(COPY ${INSTALL_DIR}/include DESTINATION ${POST_INSTALL_DIR}/)
+	file(GLOB LIBS ${INSTALL_DIR}/lib/*.lib)
+	foreach(ARG $\{LIBS\})
+	    file(COPY $\{ARG\} DESTINATION ${POST_INSTALL_DIR}/lib/)
 	endforeach()
-	foreach(ARG ${LIBS})
-	    file(COPY ${INSTALL_DIR}/bin/$\{ARG\}.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
-	    file(COPY ${INSTALL_DIR}/lib/$\{ARG\}.lib DESTINATION ${POST_INSTALL_DIR}/lib/)
+	file(GLOB DLLS ${INSTALL_DIR}/bin/*.dll)
+	foreach(ARG $\{DLLS\})
+	    file(COPY $\{ARG\} DESTINATION ${POST_INSTALL_DIR}/bin/)
 	endforeach()
 	file(COPY ${INSTALL_DIR}/plugins/ DESTINATION ${POST_INSTALL_DIR}/plugins/)
 	file(COPY ${INSTALL_DIR}/bin/moc.exe DESTINATION ${POST_INSTALL_DIR}/bin/)
@@ -147,27 +150,16 @@ else()
             -no-icu;
             ${MODULES_TO_EXCLUDE}
         )
-	set(INCLUDE_DIRS 
-		QtCore
-		QtGui
-		QtWidgets
-		QtMultimedia
-		QtMultimediaWidgets
-		QtOpenGL
-		QtPrintSupport
-		QtNetwork
-	)
 	
 	file(GENERATE OUTPUT ${INSTALL_DIR}package.cmake CONTENT "
 	file(GLOB FILES ${SOURCE_DIR}/LICENSE.*)
 	foreach(ARG $\{FILES\})
 	    file(COPY $\{ARG\} DESTINATION ${POST_INSTALL_DIR}/licences/qt5/)
 	endforeach()
-	foreach(ARG ${INCLUDE_DIRS})
-	    file(COPY ${INSTALL_DIR}/include/$\{ARG\} DESTINATION ${POST_INSTALL_DIR}/include/)
-	endforeach()
-	foreach(ARG ${LIBS})
-	    file(COPY ${INSTALL_DIR}/lib/lib$\{ARG\}.so DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+	file(COPY ${INSTALL_DIR}/include DESTINATION ${POST_INSTALL_DIR}/)
+	file(GLOB LIBS ${INSTALL_DIR}/lib/*.so*)
+	foreach(ARG $\{LIBS\})
+	    file(COPY $\{ARG\} DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
 	endforeach()
 	file(COPY ${INSTALL_DIR}/plugins/ DESTINATION ${POST_INSTALL_DIR}/plugins/)
 	file(COPY ${INSTALL_DIR}/bin/moc DESTINATION ${POST_INSTALL_DIR}/bin/)
