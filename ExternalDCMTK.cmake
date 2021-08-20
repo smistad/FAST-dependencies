@@ -6,19 +6,19 @@ create_package_code(
 	"
 	file(COPY ${INSTALL_DIR}/include/dcmtk DESTINATION ${POST_INSTALL_DIR}/include/)
 	file(COPY ${BUILD_DIR}/src/dcmtk/COPYRIGHT DESTINATION ${POST_INSTALL_DIR}/licences/dcmtk/)
-	file(COPY 
-		${INSTALL_DIR}/bin/libdcmdata.dll 
-	        ${INSTALL_DIR}/bin/libdcmimgle.dll
-	        ${INSTALL_DIR}/bin/liboflog.dll
-	        ${INSTALL_DIR}/bin/libofstd.dll
+	file(COPY
+		${INSTALL_DIR}/bin/dcmdata.dll
+    ${INSTALL_DIR}/bin/dcmimgle.dll
+    ${INSTALL_DIR}/bin/oflog.dll
+    ${INSTALL_DIR}/bin/ofstd.dll
 		DESTINATION ${POST_INSTALL_DIR}/bin/
 	)
-	file(COPY 
-		${INSTALL_DIR}/lib/libdcmdata.lib
-	        ${INSTALL_DIR}/lib/libdcmimgle.lib
-	        ${INSTALL_DIR}/lib/liboflog.lib
-	        ${INSTALL_DIR}/lib/libofstd.lib
-		DESTINATION ${POST_INSTALL_DIR}/lib/
+	file(COPY
+			${INSTALL_DIR}/lib/dcmdata.lib
+      ${INSTALL_DIR}/lib/dcmimgle.lib
+      ${INSTALL_DIR}/lib/oflog.lib
+      ${INSTALL_DIR}/lib/ofstd.lib
+			DESTINATION ${POST_INSTALL_DIR}/lib/
 	)
 	"
 )
@@ -40,7 +40,7 @@ ExternalProject_Add(dcmtk
         PREFIX ${BUILD_DIR}
         BINARY_DIR ${BUILD_DIR}
         GIT_REPOSITORY "https://github.com/DCMTK/dcmtk.git"
-	GIT_TAG "DCMTK-${VERSION}"
+				GIT_TAG "DCMTK-${VERSION}"
         CMAKE_ARGS
             -DCMAKE_MACOSX_RPATH=ON
             -DBUILD_SHARED_LIBS=ON
@@ -54,7 +54,5 @@ ExternalProject_Add(dcmtk
             -DCMAKE_BUILD_TYPE:STRING=Release
             -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF
             -DCMAKE_INSTALL_MESSAGE:BOOL=LAZY
-	    -DCMAKE_INSTALL_PREFIX:STRING=${INSTALL_DIR}
+				    -DCMAKE_INSTALL_PREFIX:STRING=${INSTALL_DIR}
 )
-
-

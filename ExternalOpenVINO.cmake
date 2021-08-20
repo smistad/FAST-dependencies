@@ -3,7 +3,7 @@
 create_package_target(openvino 2021.1)
 
 if(WIN32)
-set(DLLs 
+set(DLLs
 	inference_engine
 	inference_engine_legacy
 	inference_engine_transformations
@@ -17,7 +17,7 @@ set(DLLs
 	myriadPlugin
 	ngraph
 )
-set(LIBs 
+set(LIBs
 	inference_engine
 	inference_engine_legacy
 	inference_engine_transformations
@@ -46,7 +46,8 @@ file(COPY ${SOURCE_DIR}/bin/intel64/Release/bin/plugins.xml DESTINATION ${POST_I
 ExternalProject_Add(${NAME}
 	PREFIX ${BUILD_DIR}
         GIT_REPOSITORY "https://github.com/openvinotoolkit/openvino.git"
-	GIT_TAG "${VERSION}"
+				GIT_TAG "${VERSION}"
+				GIT_PROGRESS 1
         UPDATE_COMMAND
             git submodule update --init --recursive
         CMAKE_ARGS
@@ -56,13 +57,15 @@ ExternalProject_Add(${NAME}
             -DENABLE_OPENCV:BOOL=OFF
             -DENABLE_PROFILING_ITT:BOOL=OFF
             -DENABLE_SAMPLES:BOOL=OFF
+						-DENABLE_SPEECH_DEMO:BOOL=OFF
             -DENABLE_CPPCHECK:BOOL=OFF
             -DENABLE_CPPLINT:BOOL=OFF
             -DBUILD_TESTING:BOOL=OFF
             #-DBUILD_SHARED_LIBS:BOOL=ON
             -DENABLE_VPU:BOOL=ON
-	    -DNGRAPH_UNIT_TEST_ENABLE:BOOL=OFF
-	    -DNGRAPH_UNIT_TEST_OPENVINO_ENABLE:BOOL=OFF
+				    -DNGRAPH_UNIT_TEST_ENABLE:BOOL=OFF
+				    -DNGRAPH_UNIT_TEST_OPENVINO_ENABLE:BOOL=OFF
+						-DTREAT_WARNING_AS_ERROR:BOOL=OFF
         CMAKE_CACHE_ARGS
             -DCMAKE_BUILD_TYPE:STRING=Release
             -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF
@@ -117,6 +120,7 @@ ExternalProject_Add(${NAME}
             -DENABLE_SAMPLES:BOOL=OFF
             -DENABLE_CPPCHECK:BOOL=OFF
             -DENABLE_CPPLINT:BOOL=OFF
+						-DENABLE_SPEECH_DEMO:BOOL=OFF
             -DBUILD_TESTING:BOOL=OFF
             #-DBUILD_SHARED_LIBS:BOOL=ON
             -DENABLE_VPU:BOOL=ON

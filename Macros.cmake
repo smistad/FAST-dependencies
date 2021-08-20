@@ -1,6 +1,6 @@
 # - Check glibc version
 # CHECK_GLIBC_VERSION()
-# 
+#
 # Once done this will define
 #
 #   GLIBC_VERSION - glibc version
@@ -27,24 +27,33 @@ macro(create_package_target NAME VERSION)
 	set(SOURCE_DIR ${TOP_BUILD_DIR}/${NAME}/src/${NAME})
 	set(INSTALL_DIR ${BUILD_DIR}/install/)
 	set(POST_INSTALL_DIR ${BUILD_DIR}/post_install/${NAME}/)
-	set(FILENAME ${PACKAGE_DIR}/${NAME}_${VERSION}_${TOOLSET}.tar.xz)
-	# Split to avoid repacking all the time
-	add_custom_command(OUTPUT ${FILENAME}
-		COMMAND ${CMAKE_COMMAND} -P ${INSTALL_DIR}/package.cmake 
-		COMMAND ${CMAKE_COMMAND} -E tar "cfJ" "${FILENAME}" "*"
-		WORKING_DIRECTORY ${POST_INSTALL_DIR}
-		COMMENT "Packaging ${NAME}"
-		DEPENDS ${NAME}
-	)
-	add_custom_target(${NAME}_package ALL DEPENDS ${FILENAME})
-	list(APPEND ALL_TARGETS ${NAME}_package)
-	list(APPEND ALL_PACKAGES ${FILENAME})
+  file(MAKE_DIRECTORY ${POST_INSTALL_DIR})
 	file(MAKE_DIRECTORY ${POST_INSTALL_DIR}/bin/)
 	file(MAKE_DIRECTORY ${POST_INSTALL_DIR}/lib/)
 	file(MAKE_DIRECTORY ${POST_INSTALL_DIR}/include/)
 	file(MAKE_DIRECTORY ${POST_INSTALL_DIR}/licences/)
-	#set(ALL_TARGETS ${ALL_TARGETS} PARENT_SCOPE)
-	#set(ALL_PACKAGES ${ALL_PACKAGES} PARENT_SCOPE)
+	set(FILENAME ${PACKAGE_DIR}/${NAME}_${VERSION}_${TOOLSET}.tar.xz)
+	# Split to avoid repacking all the time
+  if(${NAME} STREQUAL "qt5")
+  	add_custom_command(OUTPUT ${FILENAME}
+  		COMMAND ${CMAKE_COMMAND} -P ${INSTALL_DIR}/package.cmake
+      COMMAND ${CMAKE_COMMAND} -E tar "cfJ" "${FILENAME}" "bin" "lib" "include" "licences" "plugins"
+  		WORKING_DIRECTORY ${POST_INSTALL_DIR}
+  		COMMENT "Packaging ${NAME}"
+  		DEPENDS ${NAME}
+  	)
+  else()
+    add_custom_command(OUTPUT ${FILENAME}
+      		COMMAND ${CMAKE_COMMAND} -P ${INSTALL_DIR}/package.cmake
+          COMMAND ${CMAKE_COMMAND} -E tar "cfJ" "${FILENAME}" "bin" "lib" "include" "licences"
+      		WORKING_DIRECTORY ${POST_INSTALL_DIR}
+      		COMMENT "Packaging ${NAME}"
+      		DEPENDS ${NAME}
+  	)
+  endif()
+	add_custom_target(${NAME}_package ALL DEPENDS ${FILENAME})
+	list(APPEND ALL_TARGETS ${NAME}_package)
+	list(APPEND ALL_PACKAGES ${FILENAME})
 endmacro()
 
 macro(create_package_code CODE)
