@@ -3,25 +3,23 @@
 This project is a CMake super build for dependencies of [FAST](https://github.com/smistad/FAST/).
 
 ## Dependency list
-* Zlib
-* Zip
-* DCMTK
-* HDF5
+* zlib
+* zip
+* dcmtk
+* hdf5
 * OpenIGTLink
 * OpenVINO
-* Qt5
-* TensorFlow
-* OpenSlide
-* libtiff
-* libjpeg
-* RealSense
-* JKQTPlotter
+* qt5
+* tensorflow
+* realsense
+* jkqtplotter
+* (OpenSlide)
+* (libtiff)
+* (libjpeg)
 
 ## Usage
 
-### Requirements
-
-#### Ubuntu Linux
+### Requirements - Ubuntu Linux
 **Install the following tools (On Ubuntu 20.04 use GCC 8, not 9 or 10 as OpenVINO fails to build):**
 ```bash
 sudo snap install cmake --classic # Use snap to get more recent version of cmake on Ubuntu 18.04
@@ -37,7 +35,7 @@ sudo apt install pkgconf libusb-1.0-0-dev # Needed for realsense
 * Install CUDA toolkit 	(if GPU build)
 * Install cuDNN 	(if GPU build)
 
-#### Windows
+### Requirements - Windows
 
 **Install the following tools:**
 * [Git](https://git-scm.com/downloads)
