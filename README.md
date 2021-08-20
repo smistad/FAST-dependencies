@@ -54,6 +54,7 @@ sudo apt install pkgconf libusb-1.0-0-dev # Needed for realsense
 ### Setup
 ```bash
 git clone https://github.com/smistad/FAST-dependencies.git
+cd FAST-dependencies
 mkdir build
 cd build
 cmake ..
