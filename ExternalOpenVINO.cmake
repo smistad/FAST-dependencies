@@ -39,8 +39,8 @@ endforeach()
 foreach(ARG ${LIBs})
 	file(COPY ${SOURCE_DIR}/bin/intel64/Release/$\{ARG\}.lib DESTINATION ${POST_INSTALL_DIR}/lib/)
 endforeach()
-file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/lib/tbb.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
-file(COPY ${SOURCE_DIR}/bin/intel64/Release/bin/plugins.xml DESTINATION ${POST_INSTALL_DIR}/bin/)
+file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/bin/tbb.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
+file(COPY ${SOURCE_DIR}/bin/intel64/Release/plugins.xml DESTINATION ${POST_INSTALL_DIR}/bin/)
 "
 )
 ExternalProject_Add(${NAME}

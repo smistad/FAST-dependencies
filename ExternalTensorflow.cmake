@@ -11,15 +11,15 @@ if(WIN32)
     if(FAST_TensorFlow_CPU_ONLY)
         set(CONFIGURE_SCRIPT ${PROJECT_SOURCE_DIR}/TensorflowConfigureCPU.bat)
         set(BUILD_COMMAND echo "Building tensorflow with bazel for CPU only" &&
-		cd ${SOURCE_DIR} &&
-                bazel build --config=opt --jobs=${FAST_TensorFlow_JOBS} //tensorflow:tensorflow_cc.dll
+            		cd ${SOURCE_DIR} &&
+                bazel build --config=opt --jobs=${FAST_TensorFlow_JOBS} //tensorflow:tensorflow_cc.dll //tensorflow/tools/lib_package:clicenses_generate
         )
     else()
         find_package(CUDA)
         set(CONFIGURE_SCRIPT ${PROJECT_SOURCE_DIR}/TensorflowConfigureCUDA.bat ${CUDA_TOOLKIT_ROOT_DIR}  ${CUDA_VERSION_STRING})
         set(BUILD_COMMAND echo "Building tensorflow with bazel and CUDA GPU support" &&
-		cd ${SOURCE_DIR} &&
-                bazel build --config opt --config=cuda --jobs=${FAST_TensorFlow_JOBS} //tensorflow:tensorflow_cc.dll
+            		cd ${SOURCE_DIR} &&
+                bazel build --config opt --config=cuda --jobs=${FAST_TensorFlow_JOBS} //tensorflow:tensorflow_cc.dll //tensorflow/tools/lib_package:clicenses_generate
 	)
     endif()
     ExternalProject_Add(${NAME}
@@ -42,6 +42,9 @@ if(WIN32)
 		${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/bazel-bin/tensorflow/tensorflow_cc.dll.if.lib ${POST_INSTALL_DIR}/lib/tensorflow_cc.lib COMMAND
 		#${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/bazel-bin/external/protobuf_archive/protobuf.lib ${FAST_EXTERNAL_INSTALL_DIR}/lib/protobuf.lib COMMAND
 		${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/bazel-bin/tensorflow/tensorflow_cc.dll ${POST_INSTALL_DIR}/bin/tensorflow_cc.dll COMMAND
+                echo "Installing licenses"  COMMAND
+		${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/bazel-bin/tensorflow/tools/lib_package/THIRD_PARTY_TF_C_LICENSES ${POST_INSTALL_DIR}/licences/tensorflow/ COMMAND
+		${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/LICENSE ${POST_INSTALL_DIR}/licences/tensorflow/ COMMAND
                 echo "Installing tensorflow headers"  COMMAND
 		xcopy "${SOURCE_DIR_WIN}\\tensorflow\\*.h" "${POST_INSTALL_DIR_WIN}\\include\\tensorflow\\" /syi COMMAND
                 echo "Installing tensorflow generated headers" COMMAND
@@ -49,25 +52,25 @@ if(WIN32)
                 echo "Installing tensorflow third party headers"  COMMAND
 		xcopy "${SOURCE_DIR_WIN}\\third_party\\" "${POST_INSTALL_DIR_WIN}\\include\\third_party\\" /syi  COMMAND
                 echo "Installing protobuf headers"  COMMAND
-		xcopy "${SOURCE_DIR_WIN}\\bazel-tensorflow_download\\external\\com_google_protobuf\\src\\google\\*.h" "${POST_INSTALL_DIR_WIN}\\include\\google\\" /syi COMMAND
-		xcopy "${SOURCE_DIR_WIN}\\bazel-tensorflow_download\\external\\com_google_protobuf\\src\\google\\*.inc" "${POST_INSTALL_DIR_WIN}\\include\\google\\" /syi COMMAND
+		xcopy "${SOURCE_DIR_WIN}\\bazel-tensorflow\\external\\com_google_protobuf\\src\\google\\*.h" "${POST_INSTALL_DIR_WIN}\\include\\google\\" /syi COMMAND
+		xcopy "${SOURCE_DIR_WIN}\\bazel-tensorflow\\external\\com_google_protobuf\\src\\google\\*.inc" "${POST_INSTALL_DIR_WIN}\\include\\google\\" /syi COMMAND
                 echo "Installing absl headers"  COMMAND
-		xcopy "${SOURCE_DIR_WIN}\\bazel-tensorflow_download\\external\\com_google_absl\\absl\\*.h" "${POST_INSTALL_DIR_WIN}\\include\\absl\\" /syi COMMAND
-		xcopy "${SOURCE_DIR_WIN}\\bazel-tensorflow_download\\external\\com_google_absl\\absl\\*.inc" "${POST_INSTALL_DIR_WIN}\\include\\absl\\" /syi
+		xcopy "${SOURCE_DIR_WIN}\\bazel-tensorflow\\external\\com_google_absl\\absl\\*.h" "${POST_INSTALL_DIR_WIN}\\include\\absl\\" /syi COMMAND
+		xcopy "${SOURCE_DIR_WIN}\\bazel-tensorflow\\external\\com_google_absl\\absl\\*.inc" "${POST_INSTALL_DIR_WIN}\\include\\absl\\" /syi
     )
 else(WIN32)
     # Use bazel to build tensorflow on linux
     if(FAST_TensorFlow_CPU_ONLY)
         set(CONFIGURE_SCRIPT ${PROJECT_SOURCE_DIR}/TensorflowConfigureCPU.sh)
         set(BUILD_COMMAND echo "Building tensorflow with bazel for CPU only" &&
-	    cd ${SOURCE_DIR} &&
-            bazel build -c opt --config=opt --copt=-mfpmath=both --copt=-march=core-avx2 --jobs=${FAST_TensorFlow_JOBS} //tensorflow:libtensorflow_cc.so
+      	    cd ${SOURCE_DIR} &&
+            bazel build -c opt --config=opt --copt=-mfpmath=both --copt=-march=core-avx2 --jobs=${FAST_TensorFlow_JOBS} //tensorflow:libtensorflow_cc.so //tensorflow/tools/lib_package:clicenses_generate
         )
     else()
         set(CONFIGURE_SCRIPT ${PROJECT_SOURCE_DIR}/TensorflowConfigureCUDA.sh)
         set(BUILD_COMMAND echo "Building tensorflow with bazel and CUDA GPU support" &&
-	    cd ${SOURCE_DIR} &&
-            bazel build -c opt --config=cuda --copt=-mfpmath=both --copt=-march=core-avx2 --jobs=${FAST_TensorFlow_JOBS} //tensorflow:libtensorflow_cc.so
+      	    cd ${SOURCE_DIR} &&
+            bazel build -c opt --config=cuda --copt=-mfpmath=both --copt=-march=core-avx2 --jobs=${FAST_TensorFlow_JOBS} //tensorflow:libtensorflow_cc.so //tensorflow/tools/lib_package:clicenses_generate
         )
     endif()
 	ExternalProject_Add(${NAME}
@@ -95,6 +98,9 @@ else(WIN32)
 		chmod a+w ${POST_INSTALL_DIR}/lib/libtensorflow_framework.so.2.4.0 &&
 		strip -s ${POST_INSTALL_DIR}/lib/libtensorflow_cc.so.2.4.0 &&
 		strip -s ${POST_INSTALL_DIR}/lib/libtensorflow_framework.so.2.4.0 &&
+                echo "Installing licenses"  &&
+            		${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/bazel-bin/tensorflow/tools/lib_package/THIRD_PARTY_TF_C_LICENSES ${POST_INSTALL_DIR}/licences/tensorflow/ &&
+            		${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/LICENSE ${POST_INSTALL_DIR}/licences/tensorflow/ &&
                 echo "Installing tensorflow headers" &&
 		cp -rf ${SOURCE_DIR}/tensorflow/ ${POST_INSTALL_DIR}/include/ &&
                 echo "Installing tensorflow generated headers" &&
