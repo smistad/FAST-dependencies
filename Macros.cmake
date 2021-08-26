@@ -32,6 +32,7 @@ macro(create_package_target NAME VERSION)
 	file(MAKE_DIRECTORY ${POST_INSTALL_DIR}/lib/)
 	file(MAKE_DIRECTORY ${POST_INSTALL_DIR}/include/)
 	file(MAKE_DIRECTORY ${POST_INSTALL_DIR}/licences/)
+    file(MAKE_DIRECTORY ${POST_INSTALL_DIR}/licences/${NAME})
 	set(FILENAME ${PACKAGE_DIR}/${NAME}_${VERSION}_${TOOLSET}.tar.xz)
 	# Split to avoid repacking all the time
   if(${NAME} STREQUAL "qt5")
