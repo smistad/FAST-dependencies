@@ -3,7 +3,6 @@ project(FAST-dependencies)
 
 set(FAST_TensorFlow_JOBS "4" CACHE STRING "Nr of parallel jobs to use for bazel build of TensorFlow. Increasing this will use more RAM.")
 option(FAST_TensorFlow_CPU_ONLY "Do not use CUDA for building TensorFlow" OFF)
-option(FAST_BUILD_Clarius "Build and package Clarius Cast API" OFF)
 
 include(ExternalProject)
 include(Macros.cmake)
@@ -30,9 +29,6 @@ include(ExternalZlib.cmake)
 include(ExternalQt5.cmake)
 include(ExternalJKQTPlotter.cmake)
 include(ExternalTensorflow.cmake)
-if(FAST_BUILD_Clarius)
-    include(Clarius/ExternalClarius.cmake)
-endif()
 
 file(GENERATE OUTPUT ${PROJECT_BINARY_DIR}/hasher.cmake CONTENT "
 	foreach(ARG ${ALL_PACKAGES})
