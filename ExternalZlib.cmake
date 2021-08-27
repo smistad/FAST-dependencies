@@ -3,7 +3,7 @@
 create_package_target(zlib 1.2.9)
 if(WIN32)
 create_package_code("
-file(COPY ${SOURCE_DIR}/README DESTINATION ${POST_INSTALL_DIR}/licences/${NAME}/)
+file(COPY ${SOURCE_DIR}/README DESTINATION ${POST_INSTALL_DIR}/licenses/${NAME}/)
 file(COPY ${INSTALL_DIR}/include/ DESTINATION ${POST_INSTALL_DIR}/include/zlib/)
 file(COPY ${INSTALL_DIR}/bin/zlib.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
 file(COPY ${INSTALL_DIR}/lib/zlib.lib DESTINATION ${POST_INSTALL_DIR}/lib/)
@@ -11,7 +11,7 @@ file(COPY ${INSTALL_DIR}/lib/zlib.lib DESTINATION ${POST_INSTALL_DIR}/lib/)
 
 else(WIN32)
 create_package_code("
-file(COPY ${SOURCE_DIR}/README DESTINATION ${POST_INSTALL_DIR}/licences/${NAME}/)
+file(COPY ${SOURCE_DIR}/README DESTINATION ${POST_INSTALL_DIR}/licenses/${NAME}/)
 file(COPY ${INSTALL_DIR}/include/ DESTINATION ${POST_INSTALL_DIR}/include/zlib/)
 file(COPY ${INSTALL_DIR}/lib/libz.so DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
 ")

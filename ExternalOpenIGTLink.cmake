@@ -4,14 +4,14 @@ create_package_target(OpenIGTLink 2.1)
 if(WIN32)
 create_package_code("
 	file(COPY ${INSTALL_DIR}/include/igtl DESTINATION ${POST_INSTALL_DIR}/include/)
-	file(COPY ${BUILD_DIR}/src/${NAME}/LICENSE.txt DESTINATION ${POST_INSTALL_DIR}/licences/OpenIGTLink/)
+	file(COPY ${BUILD_DIR}/src/${NAME}/LICENSE.txt DESTINATION ${POST_INSTALL_DIR}/licenses/OpenIGTLink/)
 	file(COPY ${INSTALL_DIR}/lib/OpenIGTLink.lib DESTINATION ${POST_INSTALL_DIR}/lib/)
 	file(COPY ${INSTALL_DIR}/bin/OpenIGTLink.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
 ")
 else()
 create_package_code("
 	file(COPY ${INSTALL_DIR}/include/igtl DESTINATION ${POST_INSTALL_DIR}/include/)
-	file(COPY ${BUILD_DIR}/src/${NAME}/LICENSE.txt DESTINATION ${POST_INSTALL_DIR}/licences/OpenIGTLink/)
+	file(COPY ${BUILD_DIR}/src/${NAME}/LICENSE.txt DESTINATION ${POST_INSTALL_DIR}/licenses/OpenIGTLink/)
 	file(COPY ${INSTALL_DIR}/lib/libOpenIGTLink.so DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
 ")
 endif()
@@ -35,4 +35,3 @@ ExternalProject_Add(${NAME}
             -DCMAKE_INSTALL_MESSAGE:BOOL=LAZY
 	    -DCMAKE_INSTALL_PREFIX:STRING=${INSTALL_DIR}
 )
-

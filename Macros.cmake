@@ -31,13 +31,13 @@ macro(create_package_target NAME VERSION)
 	file(MAKE_DIRECTORY ${POST_INSTALL_DIR}/bin/)
 	file(MAKE_DIRECTORY ${POST_INSTALL_DIR}/lib/)
 	file(MAKE_DIRECTORY ${POST_INSTALL_DIR}/include/)
-	file(MAKE_DIRECTORY ${POST_INSTALL_DIR}/licences/)
+	file(MAKE_DIRECTORY ${POST_INSTALL_DIR}/licenses/)
 	set(FILENAME ${PACKAGE_DIR}/${NAME}_${VERSION}_${TOOLSET}.tar.xz)
 	# Split to avoid repacking all the time
   if(${NAME} STREQUAL "qt5")
   	add_custom_command(OUTPUT ${FILENAME}
   		COMMAND ${CMAKE_COMMAND} -P ${INSTALL_DIR}/package.cmake
-      COMMAND ${CMAKE_COMMAND} -E tar "cfJ" "${FILENAME}" "bin" "lib" "include" "licences" "plugins"
+      COMMAND ${CMAKE_COMMAND} -E tar "cfJ" "${FILENAME}" "bin" "lib" "include" "licenses" "plugins"
   		WORKING_DIRECTORY ${POST_INSTALL_DIR}
   		COMMENT "Packaging ${NAME}"
   		DEPENDS ${NAME}
@@ -45,7 +45,7 @@ macro(create_package_target NAME VERSION)
   else()
     add_custom_command(OUTPUT ${FILENAME}
       		COMMAND ${CMAKE_COMMAND} -P ${INSTALL_DIR}/package.cmake
-          COMMAND ${CMAKE_COMMAND} -E tar "cfJ" "${FILENAME}" "bin" "lib" "include" "licences"
+          COMMAND ${CMAKE_COMMAND} -E tar "cfJ" "${FILENAME}" "bin" "lib" "include" "licenses"
       		WORKING_DIRECTORY ${POST_INSTALL_DIR}
       		COMMENT "Packaging ${NAME}"
       		DEPENDS ${NAME}

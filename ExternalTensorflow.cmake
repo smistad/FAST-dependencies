@@ -43,8 +43,8 @@ if(WIN32)
 		#${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/bazel-bin/external/protobuf_archive/protobuf.lib ${FAST_EXTERNAL_INSTALL_DIR}/lib/protobuf.lib COMMAND
 		${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/bazel-bin/tensorflow/tensorflow_cc.dll ${POST_INSTALL_DIR}/bin/tensorflow_cc.dll COMMAND
                 echo "Installing licenses"  COMMAND
-		${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/bazel-bin/tensorflow/tools/lib_package/THIRD_PARTY_TF_C_LICENSES ${POST_INSTALL_DIR}/licences/tensorflow/ COMMAND
-		${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/LICENSE ${POST_INSTALL_DIR}/licences/tensorflow/ COMMAND
+		${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/bazel-bin/tensorflow/tools/lib_package/THIRD_PARTY_TF_C_LICENSES ${POST_INSTALL_DIR}/licenses/tensorflow/ COMMAND
+		${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/LICENSE ${POST_INSTALL_DIR}/licenses/tensorflow/ COMMAND
                 echo "Installing tensorflow headers"  COMMAND
 		xcopy "${SOURCE_DIR_WIN}\\tensorflow\\*.h" "${POST_INSTALL_DIR_WIN}\\include\\tensorflow\\" /syi COMMAND
                 echo "Installing tensorflow generated headers" COMMAND
@@ -99,8 +99,8 @@ else(WIN32)
 		strip -s ${POST_INSTALL_DIR}/lib/libtensorflow_cc.so.2.4.0 &&
 		strip -s ${POST_INSTALL_DIR}/lib/libtensorflow_framework.so.2.4.0 &&
                 echo "Installing licenses"  &&
-            		${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/bazel-bin/tensorflow/tools/lib_package/THIRD_PARTY_TF_C_LICENSES ${POST_INSTALL_DIR}/licences/tensorflow/ &&
-            		${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/LICENSE ${POST_INSTALL_DIR}/licences/tensorflow/ &&
+            		${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/bazel-bin/tensorflow/tools/lib_package/THIRD_PARTY_TF_C_LICENSES ${POST_INSTALL_DIR}/licenses/tensorflow/ &&
+            		${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/LICENSE ${POST_INSTALL_DIR}/licenses/tensorflow/ &&
                 echo "Installing tensorflow headers" &&
 		cp -rf ${SOURCE_DIR}/tensorflow/ ${POST_INSTALL_DIR}/include/ &&
                 echo "Installing tensorflow generated headers" &&
