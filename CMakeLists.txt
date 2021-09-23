@@ -19,6 +19,7 @@ set(TOOLSET glibc${GLIBC_VERSION})
 endif()
 
 # List all dependencies to build
+include(ExternalOpenCL.cmake)
 include(ExternalDCMTK.cmake)
 include(ExternalHDF5.cmake)
 include(ExternalZip.cmake)
