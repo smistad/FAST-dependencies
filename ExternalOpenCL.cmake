@@ -9,6 +9,13 @@ file(COPY ${BUILD_DIR}/src/${NAME}/LICENSE DESTINATION ${POST_INSTALL_DIR}/licen
 file(COPY ${INSTALL_DIR}/lib/OpenCL.lib DESTINATION ${POST_INSTALL_DIR}/lib/)
 file(COPY ${INSTALL_DIR}/bin/OpenCL.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
 ")
+elseif(APPLE)
+create_package_code("
+file(COPY ${BUILD_DIR}/src/${NAME}_headers/CL/ DESTINATION ${POST_INSTALL_DIR}/include/CL/)
+file(COPY ${BUILD_DIR}/src/${NAME}_headers_cpp/include/CL/ DESTINATION ${POST_INSTALL_DIR}/include/CL/)
+file(COPY ${BUILD_DIR}/src/${NAME}/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/${NAME}/)
+file(COPY ${INSTALL_DIR}/lib/libOpenCL.dylib DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+")
 else()
 create_package_code("
 file(COPY ${BUILD_DIR}/src/${NAME}_headers/CL/ DESTINATION ${POST_INSTALL_DIR}/include/CL/)

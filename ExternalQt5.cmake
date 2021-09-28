@@ -122,10 +122,29 @@ else()
             -qt-zlib;
             -qt-libpng;
             -qt-libjpeg;
+            -qt-freetype;
+            -qt-harfbuzz;
+            -qt-pcre;
             -no-directfb;
             -no-framework;
+            -no-icu;
             ${MODULES_TO_EXCLUDE}
         )
+	
+	file(GENERATE OUTPUT ${INSTALL_DIR}package.cmake CONTENT "
+	file(GLOB FILES ${SOURCE_DIR}/LICENSE.*)
+	foreach(ARG $\{FILES\})
+	    file(COPY $\{ARG\} DESTINATION ${POST_INSTALL_DIR}/licenses/qt5/)
+	endforeach()
+	file(COPY ${INSTALL_DIR}/include DESTINATION ${POST_INSTALL_DIR}/)
+	file(GLOB LIBS ${INSTALL_DIR}/lib/*.dylib*)
+	foreach(ARG $\{LIBS\})
+	    file(COPY $\{ARG\} DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+	endforeach()
+	file(COPY ${INSTALL_DIR}/plugins/ DESTINATION ${POST_INSTALL_DIR}/plugins/)
+	file(COPY ${INSTALL_DIR}/bin/moc DESTINATION ${POST_INSTALL_DIR}/bin/)
+	")
+
     else()
 	# Linux
         set(OPTIONS
