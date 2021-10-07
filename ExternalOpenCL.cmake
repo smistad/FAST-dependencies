@@ -62,6 +62,7 @@ ExternalProject_Add(${NAME}
         UPDATE_COMMAND "" # Hack to avoid rebuild all the time on linux
         CMAKE_ARGS
 	  -DOPENCL_ICD_LOADER_HEADERS_DIR=${BUILD_DIR}/src/${NAME}_headers/
+	  -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=${CMAKE_OSX_DEPLOYMENT_TARGET}
         CMAKE_CACHE_ARGS
           -DCMAKE_BUILD_TYPE:STRING=Release
           -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF
