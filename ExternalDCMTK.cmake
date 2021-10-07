@@ -22,7 +22,19 @@ create_package_code(
 	)
 	"
 )
-else(WIN32)
+elseif(APPLE)
+create_package_code(
+	"
+	file(COPY ${INSTALL_DIR}/include/dcmtk DESTINATION ${POST_INSTALL_DIR}/include/)
+	file(COPY ${BUILD_DIR}/src/dcmtk/COPYRIGHT DESTINATION ${POST_INSTALL_DIR}/licenses/dcmtk/)
+	file(COPY ${INSTALL_DIR}/lib/libdcmdata.dylib DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+	file(COPY ${INSTALL_DIR}/lib/libdcmimgle.dylib DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+	file(COPY ${INSTALL_DIR}/lib/liboflog.dylib DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+	file(COPY ${INSTALL_DIR}/lib/libofstd.dylib DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+	"
+)
+
+else()
 create_package_code(
 	"
 	file(COPY ${INSTALL_DIR}/include/dcmtk DESTINATION ${POST_INSTALL_DIR}/include/)

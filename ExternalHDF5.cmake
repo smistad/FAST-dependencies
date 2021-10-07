@@ -10,6 +10,14 @@ file(COPY ${INSTALL_DIR}/lib/hdf5_cpp.lib DESTINATION ${POST_INSTALL_DIR}/lib/)
 file(COPY ${INSTALL_DIR}/bin/hdf5.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
 file(COPY ${INSTALL_DIR}/bin/hdf5_cpp.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
 ")
+elseif(APPLE)
+create_package_code("
+file(COPY ${INSTALL_DIR}/include/ DESTINATION ${POST_INSTALL_DIR}/include/)
+file(COPY ${BUILD_DIR}/src/hdf5/COPYING DESTINATION ${POST_INSTALL_DIR}/licenses/hdf5/)
+file(COPY ${INSTALL_DIR}/lib/libhdf5.dylib DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+file(COPY ${INSTALL_DIR}/lib/libhdf5_cpp.dylib DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+")
+
 else()
 create_package_code("
 file(COPY ${INSTALL_DIR}/include/ DESTINATION ${POST_INSTALL_DIR}/include/)
