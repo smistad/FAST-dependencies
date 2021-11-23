@@ -23,7 +23,7 @@ export TF_ENABLE_XLA=0
 export TF_CUDA_CLANG=0
 export TF_NEED_CUDA=0
 export TF_NCCL_VERSION=" "
-export PYTHON_BIN_PATH="$(which python3)"
+export PYTHON_BIN_PATH="asd"
 export PYTHON_LIB_PATH="$($PYTHON_BIN_PATH -c 'import site; print(site.getsitepackages()[0])')"
 
 ./configure

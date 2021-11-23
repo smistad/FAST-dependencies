@@ -4,7 +4,11 @@ set(ENV{OSX_DEPLOYMENT_TARGET} "10.13")
 project(FAST-dependencies)
 
 set(FAST_TensorFlow_JOBS "4" CACHE STRING "Nr of parallel jobs to use for bazel build of TensorFlow. Increasing this will use more RAM.")
+if(APPLE)
+option(FAST_TensorFlow_CPU_ONLY "Do not use CUDA for building TensorFlow" ON)
+else()
 option(FAST_TensorFlow_CPU_ONLY "Do not use CUDA for building TensorFlow" OFF)
+endif()
 
 include(ExternalProject)
 include(Macros.cmake)

@@ -83,18 +83,17 @@ ExternalProject_Add(${NAME}
 )
 elseif(APPLE)
 set(SO_FILES
-	libinference_engine.so
-	libinference_engine_legacy.so
-	libinference_engine_transformations.so
-	libinference_engine_lp_transformations.so
-	libinference_engine_ir_reader.so
-	libinference_engine_ir_v7_reader.so
-	libinference_engine_onnx_reader.so
-	libonnx_importer.so
-	libclDNNPlugin.so
-	libMKLDNNPlugin.so
-	libmyriadPlugin.so
-	libngraph.so
+	libinference_engine.dylib
+	libinference_engine_legacy.dylib
+	libinference_engine_transformations.dylib
+	libinference_engine_lp_transformations.dylib
+	libinference_engine_ir_reader.dylib
+	libinference_engine_ir_v7_reader.dylib
+	libinference_engine_onnx_reader.dylib
+	libonnx_importer.dylib
+	libMKLDNNPlugin.dylib
+	libmyriadPlugin.dylib
+	libngraph.dylib
 )
 file(GENERATE OUTPUT ${INSTALL_DIR}package.cmake CONTENT "
 file(COPY ${SOURCE_DIR}/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/${NAME}/)
@@ -107,7 +106,7 @@ file(COPY ${SOURCE_DIR}/ngraph/core/include/ngraph/ DESTINATION ${POST_INSTALL_D
 foreach(ARG ${SO_FILES})
    file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/$\{ARG\} DESTINATION ${POST_INSTALL_DIR}/lib/)
 endforeach()
-file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/lib/libtbb.so.2 DESTINATION ${POST_INSTALL_DIR}/lib/)
+file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/lib/libtbb.dylib DESTINATION ${POST_INSTALL_DIR}/lib/)
 file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/plugins.xml DESTINATION ${POST_INSTALL_DIR}/lib/)
 ")
 ExternalProject_Add(${NAME}
