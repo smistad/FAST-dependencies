@@ -9,6 +9,13 @@ file(COPY ${BUILD_DIR}/src/${NAME}/LICENSE DESTINATION ${POST_INSTALL_DIR}/licen
 file(COPY ${INSTALL_DIR}/lib/OpenCL.lib DESTINATION ${POST_INSTALL_DIR}/lib/)
 file(COPY ${INSTALL_DIR}/bin/OpenCL.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
 ")
+elseif(APPLE)
+create_package_code("
+file(COPY ${BUILD_DIR}/src/${NAME}_headers/CL/ DESTINATION ${POST_INSTALL_DIR}/include/CL/)
+file(COPY ${BUILD_DIR}/src/${NAME}_headers_cpp/include/CL/ DESTINATION ${POST_INSTALL_DIR}/include/CL/)
+file(COPY ${BUILD_DIR}/src/${NAME}/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/${NAME}/)
+file(COPY ${INSTALL_DIR}/lib/libOpenCL.dylib DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+")
 else()
 create_package_code("
 file(COPY ${BUILD_DIR}/src/${NAME}_headers/CL/ DESTINATION ${POST_INSTALL_DIR}/include/CL/)
@@ -55,6 +62,7 @@ ExternalProject_Add(${NAME}
         UPDATE_COMMAND "" # Hack to avoid rebuild all the time on linux
         CMAKE_ARGS
 	  -DOPENCL_ICD_LOADER_HEADERS_DIR=${BUILD_DIR}/src/${NAME}_headers/
+	  -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=${CMAKE_OSX_DEPLOYMENT_TARGET}
         CMAKE_CACHE_ARGS
           -DCMAKE_BUILD_TYPE:STRING=Release
           -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF

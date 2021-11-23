@@ -22,7 +22,19 @@ create_package_code(
 	)
 	"
 )
-else(WIN32)
+elseif(APPLE)
+create_package_code(
+	"
+	file(COPY ${INSTALL_DIR}/include/dcmtk DESTINATION ${POST_INSTALL_DIR}/include/)
+	file(COPY ${BUILD_DIR}/src/dcmtk/COPYRIGHT DESTINATION ${POST_INSTALL_DIR}/licenses/dcmtk/)
+	file(COPY ${INSTALL_DIR}/lib/libdcmdata.dylib DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+	file(COPY ${INSTALL_DIR}/lib/libdcmimgle.dylib DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+	file(COPY ${INSTALL_DIR}/lib/liboflog.dylib DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+	file(COPY ${INSTALL_DIR}/lib/libofstd.dylib DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+	"
+)
+
+else()
 create_package_code(
 	"
 	file(COPY ${INSTALL_DIR}/include/dcmtk DESTINATION ${POST_INSTALL_DIR}/include/)
@@ -49,6 +61,7 @@ ExternalProject_Add(dcmtk
             -DDCMTK_WITH_DOXYGEN=OFF
             -DDCMTK_WITH_ICU=OFF
             -DCMAKE_INSTALL_RPATH:STRING=$ORIGIN/../lib
+	    -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=${CMAKE_OSX_DEPLOYMENT_TARGET}
         CMAKE_CACHE_ARGS
             -DDCMTK_MODULES:STRING=${MODULES}
             -DCMAKE_BUILD_TYPE:STRING=Release

@@ -8,8 +8,13 @@ file(COPY ${INSTALL_DIR}/include/ DESTINATION ${POST_INSTALL_DIR}/include/zlib/)
 file(COPY ${INSTALL_DIR}/bin/zlib.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
 file(COPY ${INSTALL_DIR}/lib/zlib.lib DESTINATION ${POST_INSTALL_DIR}/lib/)
 ")
-
-else(WIN32)
+elseif(APPLE)
+create_package_code("
+file(COPY ${SOURCE_DIR}/README DESTINATION ${POST_INSTALL_DIR}/licenses/${NAME}/)
+file(COPY ${INSTALL_DIR}/include/ DESTINATION ${POST_INSTALL_DIR}/include/zlib/)
+file(COPY ${INSTALL_DIR}/lib/libz.dylib DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+")
+else()
 create_package_code("
 file(COPY ${SOURCE_DIR}/README DESTINATION ${POST_INSTALL_DIR}/licenses/${NAME}/)
 file(COPY ${INSTALL_DIR}/include/ DESTINATION ${POST_INSTALL_DIR}/include/zlib/)
@@ -24,6 +29,7 @@ ExternalProject_Add(${NAME}
 	GIT_TAG "v${VERSION}"
         CMAKE_ARGS
             -DCMAKE_MACOSX_RPATH=ON
+	    -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=${CMAKE_OSX_DEPLOYMENT_TARGET}
         CMAKE_CACHE_ARGS
             -DCMAKE_BUILD_TYPE:STRING=Release
             -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF

@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version")
+set(ENV{OSX_DEPLOYMENT_TARGET} "10.13")
 project(FAST-dependencies)
 
 set(FAST_TensorFlow_JOBS "4" CACHE STRING "Nr of parallel jobs to use for bazel build of TensorFlow. Increasing this will use more RAM.")
@@ -13,7 +15,9 @@ file(MAKE_DIRECTORY ${PACKAGE_DIR})
 
 if(WIN32)
 set(TOOLSET msvc${MSVC_TOOLSET_VERSION})
-else(WIN32)
+elseif(APPLE)
+set(TOOLSET mac${CMAKE_OSX_DEPLOYMENT_TARGET})
+else()
 CHECK_GLIBC_VERSION()
 set(TOOLSET glibc${GLIBC_VERSION})
 endif()

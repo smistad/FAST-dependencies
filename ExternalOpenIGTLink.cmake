@@ -8,6 +8,13 @@ create_package_code("
 	file(COPY ${INSTALL_DIR}/lib/OpenIGTLink.lib DESTINATION ${POST_INSTALL_DIR}/lib/)
 	file(COPY ${INSTALL_DIR}/bin/OpenIGTLink.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
 ")
+elseif(APPLE)
+create_package_code("
+	file(COPY ${INSTALL_DIR}/include/igtl DESTINATION ${POST_INSTALL_DIR}/include/)
+	file(COPY ${BUILD_DIR}/src/${NAME}/LICENSE.txt DESTINATION ${POST_INSTALL_DIR}/licenses/OpenIGTLink/)
+	file(COPY ${INSTALL_DIR}/lib/libOpenIGTLink.dylib DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+")
+
 else()
 create_package_code("
 	file(COPY ${INSTALL_DIR}/include/igtl DESTINATION ${POST_INSTALL_DIR}/include/)
@@ -29,6 +36,7 @@ ExternalProject_Add(${NAME}
 	    -DLIBRARY_OUTPUT_PATH=${INSTALL_DIR}/lib/
             -DCMAKE_MACOSX_RPATH=ON
 	    -DOpenIGTLink_INSTALL_LIB_DIR=${INSTALL_DIR}/lib/
+	    -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=${CMAKE_OSX_DEPLOYMENT_TARGET}
         CMAKE_CACHE_ARGS
             -DCMAKE_BUILD_TYPE:STRING=Release
             -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF
