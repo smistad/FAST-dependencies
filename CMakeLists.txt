@@ -30,6 +30,8 @@ include(ExternalZlib.cmake)
 include(ExternalQt5.cmake)
 include(ExternalJKQTPlotter.cmake)
 include(ExternalTensorflow.cmake)
+include(ExternalTIFF.cmake)
+include(ExternalOpenSlide.cmake)
 
 file(GENERATE OUTPUT ${PROJECT_BINARY_DIR}/hasher.cmake CONTENT "
 	foreach(ARG ${ALL_PACKAGES})
