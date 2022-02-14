@@ -38,6 +38,7 @@ include(ExternalZlib.cmake)
 include(ExternalQt5.cmake)
 include(ExternalJKQTPlotter.cmake)
 include(ExternalTensorflow.cmake)
+include(ExternalLibJPEG.cmake)
 include(ExternalTIFF.cmake)
 include(ExternalOpenSlide.cmake)
 

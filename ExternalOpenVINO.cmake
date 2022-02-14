@@ -1,6 +1,6 @@
 # Build OpenVINO
 
-create_package_target(openvino 2021.1)
+create_package_target(openvino 2021.4.2)
 
 if(WIN32)
 set(DLLs
@@ -33,7 +33,6 @@ file(COPY ${SOURCE_DIR}/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/${NAME}
 file(COPY ${SOURCE_DIR}/inference-engine/thirdparty/ade/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/ade/)
 file(COPY ${SOURCE_DIR}/inference-engine/thirdparty/mkl-dnn/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/mkl-dnn/)
 file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/tbb/)
-file(COPY ${SOURCE_DIR}/ngraph/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/ngraph/)
 file(COPY ${SOURCE_DIR}/inference-engine/include/ DESTINATION ${POST_INSTALL_DIR}/include/openvino/)
 file(COPY ${SOURCE_DIR}/ngraph/core/include/ngraph/ DESTINATION ${POST_INSTALL_DIR}/include/ngraph/)
 foreach(ARG ${DLLs})
@@ -44,6 +43,7 @@ foreach(ARG ${LIBs})
 endforeach()
 file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/bin/tbb.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
 file(COPY ${SOURCE_DIR}/bin/intel64/Release/plugins.xml DESTINATION ${POST_INSTALL_DIR}/bin/)
+file(COPY ${SOURCE_DIR}/bin/intel64/Release/cache.json DESTINATION ${POST_INSTALL_DIR}/bin/)
 "
 )
 ExternalProject_Add(${NAME}
@@ -73,7 +73,7 @@ ExternalProject_Add(${NAME}
             -DCMAKE_BUILD_TYPE:STRING=Release
             -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF
             -DCMAKE_INSTALL_MESSAGE:BOOL=LAZY
-            -DCMAKE_INSTALL_PREFIX:STRING=${FAST_EXTERNAL_INSTALL_DIR}
+	    -DCMAKE_INSTALL_PREFIX:STRING=${INSTALL_DIR}
         BUILD_COMMAND
             ${CMAKE_COMMAND} --build . --config Release --target inference_engine COMMAND
             ${CMAKE_COMMAND} --build . --config Release --target clDNNPlugin COMMAND
@@ -100,13 +100,13 @@ file(COPY ${SOURCE_DIR}/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/${NAME}
 file(COPY ${SOURCE_DIR}/inference-engine/thirdparty/ade/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/ade/)
 file(COPY ${SOURCE_DIR}/inference-engine/thirdparty/mkl-dnn/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/mkl-dnn/)
 file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/tbb/)
-file(COPY ${SOURCE_DIR}/ngraph/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/ngraph/)
 file(COPY ${SOURCE_DIR}/inference-engine/include/ DESTINATION ${POST_INSTALL_DIR}/include/openvino/)
 file(COPY ${SOURCE_DIR}/ngraph/core/include/ngraph/ DESTINATION ${POST_INSTALL_DIR}/include/ngraph/)
 foreach(ARG ${SO_FILES})
    file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/$\{ARG\} DESTINATION ${POST_INSTALL_DIR}/lib/)
 endforeach()
 file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/lib/libtbb.dylib DESTINATION ${POST_INSTALL_DIR}/lib/)
+file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/cache.json DESTINATION ${POST_INSTALL_DIR}/lib/)
 file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/plugins.xml DESTINATION ${POST_INSTALL_DIR}/lib/)
 ")
 ExternalProject_Add(${NAME}
@@ -162,13 +162,13 @@ file(COPY ${SOURCE_DIR}/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/${NAME}
 file(COPY ${SOURCE_DIR}/inference-engine/thirdparty/ade/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/ade/)
 file(COPY ${SOURCE_DIR}/inference-engine/thirdparty/mkl-dnn/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/mkl-dnn/)
 file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/tbb/)
-file(COPY ${SOURCE_DIR}/ngraph/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/ngraph/)
 file(COPY ${SOURCE_DIR}/inference-engine/include/ DESTINATION ${POST_INSTALL_DIR}/include/openvino/)
 file(COPY ${SOURCE_DIR}/ngraph/core/include/ngraph/ DESTINATION ${POST_INSTALL_DIR}/include/ngraph/)
 foreach(ARG ${SO_FILES})
    file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/$\{ARG\} DESTINATION ${POST_INSTALL_DIR}/lib/)
 endforeach()
 file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/lib/libtbb.so.2 DESTINATION ${POST_INSTALL_DIR}/lib/)
+file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/cache.json DESTINATION ${POST_INSTALL_DIR}/lib/)
 file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/plugins.xml DESTINATION ${POST_INSTALL_DIR}/lib/)
 ")
 ExternalProject_Add(${NAME}
