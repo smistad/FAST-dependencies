@@ -171,6 +171,11 @@ endforeach()
 file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/lib/libtbb.so.2 DESTINATION ${POST_INSTALL_DIR}/lib/)
 file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/cache.json DESTINATION ${POST_INSTALL_DIR}/lib/)
 file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/plugins.xml DESTINATION ${POST_INSTALL_DIR}/lib/)
+file(GLOB installedSOs ${POST_INSTALL_DIR}/lib/*.so*)
+foreach(SO $\{installedSOs\})
+    message(\"-- Setting runtime path of $\{SO\}\")
+    execute_process(COMMAND patchelf --set-rpath \"$ORIGIN/../lib\" $\{SO\})
+endforeach()
 ")
 ExternalProject_Add(${NAME}
 	PREFIX ${BUILD_DIR}
