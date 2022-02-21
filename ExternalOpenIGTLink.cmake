@@ -1,6 +1,6 @@
 # Build OpenIGTLink
 
-create_package_target(OpenIGTLink 2.1)
+create_package_target(OpenIGTLink 3.1)
 if(WIN32)
 create_package_code("
 	file(COPY ${INSTALL_DIR}/include/igtl DESTINATION ${POST_INSTALL_DIR}/include/)
@@ -28,7 +28,7 @@ ExternalProject_Add(${NAME}
 	BINARY_DIR ${BUILD_DIR}
         GIT_REPOSITORY "https://github.com/openigtlink/OpenIGTLink.git"
 	GIT_PROGRESS 1
-	GIT_TAG "v${VERSION}"
+	GIT_TAG "3a2297d173d20596f53d5b5c84600ed4fa51c07c"
         CMAKE_ARGS
             -DBUILD_SHARED_LIBS=ON
             -DBUILD_TESTING=OFF
