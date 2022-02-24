@@ -87,12 +87,12 @@ set(SO_FILES
 	libinference_engine_legacy.dylib
 	libinference_engine_transformations.dylib
 	libinference_engine_lp_transformations.dylib
-	libinference_engine_ir_reader.dylib
-	libinference_engine_ir_v7_reader.dylib
-	libinference_engine_onnx_reader.dylib
+	libinference_engine_ir_reader.so
+	libinference_engine_ir_v7_reader.so
+	libinference_engine_onnx_reader.so
 	libonnx_importer.dylib
-	libMKLDNNPlugin.dylib
-	libmyriadPlugin.dylib
+	libMKLDNNPlugin.so
+	libmyriadPlugin.so
 	libngraph.dylib
 )
 file(GENERATE OUTPUT ${INSTALL_DIR}package.cmake CONTENT "
@@ -106,7 +106,7 @@ foreach(ARG ${SO_FILES})
    file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/$\{ARG\} DESTINATION ${POST_INSTALL_DIR}/lib/)
 endforeach()
 file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/lib/libtbb.dylib DESTINATION ${POST_INSTALL_DIR}/lib/)
-file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/cache.json DESTINATION ${POST_INSTALL_DIR}/lib/)
+#file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/cache.json DESTINATION ${POST_INSTALL_DIR}/lib/)
 file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/plugins.xml DESTINATION ${POST_INSTALL_DIR}/lib/)
 ")
 ExternalProject_Add(${NAME}
