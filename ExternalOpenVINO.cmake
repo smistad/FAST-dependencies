@@ -13,7 +13,7 @@ set(DLLs
 	inference_engine_onnx_reader
 	onnx_importer
 	onnx_proto
-	protobuf
+	libprotobuf
 	clDNNPlugin
 	MKLDNNPlugin
 	myriadPlugin
