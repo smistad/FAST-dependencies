@@ -45,6 +45,7 @@ foreach(ARG ${LIBs})
 endforeach()
 file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/bin/tbb.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
 file(COPY ${SOURCE_DIR}/bin/intel64/Release/plugins.xml DESTINATION ${POST_INSTALL_DIR}/bin/)
+file(COPY ${SOURCE_DIR}/bin/intel64/Release/cache.json DESTINATION ${POST_INSTALL_DIR}/bin/)
 "
 )
 ExternalProject_Add(${NAME}
@@ -74,7 +75,7 @@ ExternalProject_Add(${NAME}
             -DCMAKE_BUILD_TYPE:STRING=Release
             -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF
             -DCMAKE_INSTALL_MESSAGE:BOOL=LAZY
-            -DCMAKE_INSTALL_PREFIX:STRING=${FAST_EXTERNAL_INSTALL_DIR}
+	    -DCMAKE_INSTALL_PREFIX:STRING=${INSTALL_DIR}
         BUILD_COMMAND
             ${CMAKE_COMMAND} --build . --config Release --target inference_engine COMMAND
             ${CMAKE_COMMAND} --build . --config Release --target clDNNPlugin COMMAND
@@ -84,20 +85,19 @@ ExternalProject_Add(${NAME}
 )
 elseif(APPLE)
 set(SO_FILES
-	libinference_engine.so
-	libinference_engine_legacy.so
-	libinference_engine_transformations.so
-	libinference_engine_lp_transformations.so
+	libinference_engine.dylib
+	libinference_engine_legacy.dylib
+	libinference_engine_transformations.dylib
+	libinference_engine_lp_transformations.dylib
 	libinference_engine_ir_reader.so
 	libinference_engine_ir_v7_reader.so
 	libinference_engine_onnx_reader.so
-	libonnx_importer.so
-	libonnx_proto.so
-	libprotobuf.so.3.7.1.0
-	libclDNNPlugin.so
+	libonnx_importer.dylib
+	libonnx_proto.dylib
+	libprotobuf.dylib
 	libMKLDNNPlugin.so
 	libmyriadPlugin.so
-	libngraph.so
+	libngraph.dylib
 )
 file(GENERATE OUTPUT ${INSTALL_DIR}package.cmake CONTENT "
 file(COPY ${SOURCE_DIR}/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/${NAME}/)
@@ -109,7 +109,8 @@ file(COPY ${SOURCE_DIR}/ngraph/core/include/ngraph/ DESTINATION ${POST_INSTALL_D
 foreach(ARG ${SO_FILES})
    file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/$\{ARG\} DESTINATION ${POST_INSTALL_DIR}/lib/)
 endforeach()
-file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/lib/libtbb.so.2 DESTINATION ${POST_INSTALL_DIR}/lib/)
+file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/lib/libtbb.dylib DESTINATION ${POST_INSTALL_DIR}/lib/)
+#file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/cache.json DESTINATION ${POST_INSTALL_DIR}/lib/)
 file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/plugins.xml DESTINATION ${POST_INSTALL_DIR}/lib/)
 ")
 ExternalProject_Add(${NAME}
@@ -173,7 +174,13 @@ foreach(ARG ${SO_FILES})
    file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/$\{ARG\} DESTINATION ${POST_INSTALL_DIR}/lib/)
 endforeach()
 file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/lib/libtbb.so.2 DESTINATION ${POST_INSTALL_DIR}/lib/)
+file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/cache.json DESTINATION ${POST_INSTALL_DIR}/lib/)
 file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/plugins.xml DESTINATION ${POST_INSTALL_DIR}/lib/)
+file(GLOB installedSOs ${POST_INSTALL_DIR}/lib/*.so*)
+foreach(SO $\{installedSOs\})
+    message(\"-- Setting runtime path of $\{SO\}\")
+    execute_process(COMMAND patchelf --set-rpath \"$ORIGIN/../lib\" $\{SO\})
+endforeach()
 ")
 ExternalProject_Add(${NAME}
 	PREFIX ${BUILD_DIR}

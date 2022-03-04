@@ -58,7 +58,55 @@ if(WIN32)
 		xcopy "${SOURCE_DIR_WIN}\\bazel-tensorflow\\external\\com_google_absl\\absl\\*.h" "${POST_INSTALL_DIR_WIN}\\include\\absl\\" /syi COMMAND
 		xcopy "${SOURCE_DIR_WIN}\\bazel-tensorflow\\external\\com_google_absl\\absl\\*.inc" "${POST_INSTALL_DIR_WIN}\\include\\absl\\" /syi
     )
-else(WIN32)
+elseif(APPLE)
+	# Use bazel to build tensorflow on Mac
+        set(CONFIGURE_SCRIPT ${PROJECT_SOURCE_DIR}/TensorflowConfigureCPU.sh)
+        set(BUILD_COMMAND echo "Building tensorflow with bazel for CPU only" &&
+      	    cd ${SOURCE_DIR} &&
+            bazel build --macos_minimum_os=10.13 --copt=-march=core-avx2 --jobs=${FAST_TensorFlow_JOBS} //tensorflow:libtensorflow_cc.dylib //tensorflow/tools/lib_package:clicenses_generate
+        )
+	ExternalProject_Add(${NAME}
+	    PREFIX ${BUILD_DIR}
+	    BINARY_DIR ${BUILD_DIR}
+	    GIT_REPOSITORY "https://github.com/smistad/tensorflow.git"
+	    GIT_TAG "c1dbfb67dfdffad3b3bc2f4fc538139a830fe6c0"
+	    GIT_PROGRESS 1
+	    #DOWNLOAD_COMMAND ""
+            UPDATE_COMMAND ""
+            # Run TF configure in the form of a shell script. CUDA should be installed in /usr/local/cuda
+            CONFIGURE_COMMAND
+	        cd ${SOURCE_DIR} && sh ${CONFIGURE_SCRIPT}
+            # Build using bazel
+            BUILD_COMMAND
+                ${BUILD_COMMAND}
+            INSTALL_COMMAND
+                echo "Installing tensorflow binary" &&
+		gcp -f ${SOURCE_DIR}/bazel-bin/tensorflow/libtensorflow_cc.2.4.0.dylib ${POST_INSTALL_DIR}/lib/ &&
+		gcp -fP ${SOURCE_DIR}/bazel-bin/tensorflow/libtensorflow_cc.2.dylib ${POST_INSTALL_DIR}/lib/ &&
+		gcp -fP ${SOURCE_DIR}/bazel-bin/tensorflow/libtensorflow_cc.dylib ${POST_INSTALL_DIR}/lib/ &&
+		gcp -f ${SOURCE_DIR}/bazel-bin/tensorflow/libtensorflow_framework.2.4.0.dylib ${POST_INSTALL_DIR}/lib/ &&
+		gcp -fP ${SOURCE_DIR}/bazel-bin/tensorflow/libtensorflow_framework.2.dylib ${POST_INSTALL_DIR}/lib/ &&
+		chmod a+w ${POST_INSTALL_DIR}/lib/libtensorflow_cc.2.4.0.dylib &&
+		chmod a+w ${POST_INSTALL_DIR}/lib/libtensorflow_framework.2.4.0.dylib &&
+		#strip ${POST_INSTALL_DIR}/lib/libtensorflow_cc.2.4.0.dylib &&
+		#strip ${POST_INSTALL_DIR}/lib/libtensorflow_framework.2.4.0.dylib &&
+                echo "Installing licenses"  &&
+            		${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/bazel-bin/tensorflow/tools/lib_package/THIRD_PARTY_TF_C_LICENSES ${POST_INSTALL_DIR}/licenses/tensorflow/ &&
+            		${CMAKE_COMMAND} -E copy ${SOURCE_DIR}/LICENSE ${POST_INSTALL_DIR}/licenses/tensorflow/ &&
+                echo "Installing tensorflow headers" &&
+		gcp -rf ${SOURCE_DIR}/tensorflow/ ${POST_INSTALL_DIR}/include/ &&
+                echo "Installing tensorflow generated headers" &&
+		cd ${SOURCE_DIR}/bazel-bin/ &&
+		bash -c "find tensorflow/ -name '*.h' | xargs gcp -f --parents -t ${POST_INSTALL_DIR}/include/" &&
+                echo "Installing tensorflow third_party headers " &&
+		gcp -rf ${SOURCE_DIR}/third_party/ ${POST_INSTALL_DIR}/include/ &&
+                echo "Installing protobuf headers" &&
+		bash -c "gcp $(greadlink -f ${SOURCE_DIR}/bazel-out/)/../../../external/com_google_protobuf/src/google/ ${POST_INSTALL_DIR}/include/ -Rf" &&
+                echo "Installing absl headers" &&
+		bash -c "gcp $(greadlink -f ${SOURCE_DIR}/bazel-out/)/../../../external/com_google_absl/absl/ ${POST_INSTALL_DIR}/include/ -Rf"
+    )
+
+else()
     # Use bazel to build tensorflow on linux
     if(FAST_TensorFlow_CPU_ONLY)
         set(CONFIGURE_SCRIPT ${PROJECT_SOURCE_DIR}/TensorflowConfigureCPU.sh)
@@ -113,4 +161,4 @@ else(WIN32)
                 echo "Installing absl headers" &&
 		bash -c "cp $(readlink -f ${SOURCE_DIR}/bazel-out/)/../../../external/com_google_absl/absl/ ${POST_INSTALL_DIR}/include/ -Rf"
     )
-endif(WIN32)
+endif()
