@@ -1,6 +1,6 @@
 # Build OpenVINO
 
-create_package_target(openvino 2021.1)
+create_package_target(openvino 2021.4.2)
 
 if(WIN32)
 set(DLLs
@@ -12,6 +12,8 @@ set(DLLs
 	inference_engine_ir_v7_reader
 	inference_engine_onnx_reader
 	onnx_importer
+	onnx_proto
+	protobuf
 	clDNNPlugin
 	MKLDNNPlugin
 	myriadPlugin
@@ -33,7 +35,6 @@ file(COPY ${SOURCE_DIR}/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/${NAME}
 file(COPY ${SOURCE_DIR}/inference-engine/thirdparty/ade/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/ade/)
 file(COPY ${SOURCE_DIR}/inference-engine/thirdparty/mkl-dnn/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/mkl-dnn/)
 file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/tbb/)
-file(COPY ${SOURCE_DIR}/ngraph/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/ngraph/)
 file(COPY ${SOURCE_DIR}/inference-engine/include/ DESTINATION ${POST_INSTALL_DIR}/include/openvino/)
 file(COPY ${SOURCE_DIR}/ngraph/core/include/ngraph/ DESTINATION ${POST_INSTALL_DIR}/include/ngraph/)
 foreach(ARG ${DLLs})
@@ -91,6 +92,8 @@ set(SO_FILES
 	libinference_engine_ir_v7_reader.so
 	libinference_engine_onnx_reader.so
 	libonnx_importer.so
+	libonnx_proto.so
+	libprotobuf.so.3.7.1.0
 	libclDNNPlugin.so
 	libMKLDNNPlugin.so
 	libmyriadPlugin.so
@@ -101,7 +104,6 @@ file(COPY ${SOURCE_DIR}/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/${NAME}
 file(COPY ${SOURCE_DIR}/inference-engine/thirdparty/ade/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/ade/)
 file(COPY ${SOURCE_DIR}/inference-engine/thirdparty/mkl-dnn/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/mkl-dnn/)
 file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/tbb/)
-file(COPY ${SOURCE_DIR}/ngraph/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/ngraph/)
 file(COPY ${SOURCE_DIR}/inference-engine/include/ DESTINATION ${POST_INSTALL_DIR}/include/openvino/)
 file(COPY ${SOURCE_DIR}/ngraph/core/include/ngraph/ DESTINATION ${POST_INSTALL_DIR}/include/ngraph/)
 foreach(ARG ${SO_FILES})
@@ -153,6 +155,8 @@ set(SO_FILES
 	libinference_engine_ir_v7_reader.so
 	libinference_engine_onnx_reader.so
 	libonnx_importer.so
+	libonnx_proto.so
+	libprotobuf.so.3.7.1.0
 	libclDNNPlugin.so
 	libMKLDNNPlugin.so
 	libmyriadPlugin.so
@@ -163,7 +167,6 @@ file(COPY ${SOURCE_DIR}/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/${NAME}
 file(COPY ${SOURCE_DIR}/inference-engine/thirdparty/ade/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/ade/)
 file(COPY ${SOURCE_DIR}/inference-engine/thirdparty/mkl-dnn/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/mkl-dnn/)
 file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/tbb/)
-file(COPY ${SOURCE_DIR}/ngraph/LICENSE DESTINATION ${POST_INSTALL_DIR}/licenses/ngraph/)
 file(COPY ${SOURCE_DIR}/inference-engine/include/ DESTINATION ${POST_INSTALL_DIR}/include/openvino/)
 file(COPY ${SOURCE_DIR}/ngraph/core/include/ngraph/ DESTINATION ${POST_INSTALL_DIR}/include/ngraph/)
 foreach(ARG ${SO_FILES})
