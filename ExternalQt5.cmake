@@ -1,6 +1,6 @@
 # Download and build Qt5
 
-create_package_target(qt5 5.14.0)
+create_package_target(qt5 5.15.5)
 
 # List of modules can be found in git repo here: github.com/qt/qt5
 set(MODULES_TO_EXCLUDE
@@ -13,7 +13,7 @@ set(MODULES_TO_EXCLUDE
         -skip qtdatavis3d
         -skip qtdeclarative
         -skip qtdoc
-        -skip qtdocgallery
+        #-skip qtdocgallery
         -skip qtfeedback
         -skip qtgamepad
         -skip qtgraphicaleffects
@@ -67,14 +67,13 @@ if(WIN32)
 	#set(BUILD_COMMAND set CL=/MP; nmake)
 	set(BUILD_COMMAND nmake)
 	set(CONFIGURE_COMMAND ${SOURCE_DIR}/configure.bat)
-	set(URL "http://download.qt.io/archive/qt/5.14/5.14.0/single/qt-everywhere-src-5.14.0.zip")
-	set(URL_HASH SHA256=0e4a3f096a3f331393240570fb4271f3f1f5a3b9c041252f6245e8dd789c96df)
+	set(URL "http://download.qt.io/archive/qt/5.15/5.15.5/single/qt-everywhere-opensource-src-5.15.5.zip")
+	set(URL_HASH SHA256=08ed914924330b99412068eb66301c455291af9eba33e499acff97ef474e5309)
 	set(OPTIONS
             -opensource;
             -confirm-license;
             -release;
             -no-compile-examples;
-            -no-openssl;
             -no-libproxy;
             -nomake tools;
             -nomake tests;
@@ -101,20 +100,20 @@ if(WIN32)
 	endforeach()
 	file(COPY ${INSTALL_DIR}/plugins/ DESTINATION ${POST_INSTALL_DIR}/plugins/)
 	file(COPY ${INSTALL_DIR}/bin/moc.exe DESTINATION ${POST_INSTALL_DIR}/bin/)
+	file(COPY ${INSTALL_DIR}/bin/rcc.exe DESTINATION ${POST_INSTALL_DIR}/bin/)
 	file(COPY ${INSTALL_DIR}/bin/idc.exe DESTINATION ${POST_INSTALL_DIR}/bin/)
 	")
 else()
 	set(BUILD_COMMAND make -j4)
 	set(CONFIGURE_COMMAND ${SOURCE_DIR}/configure)
-	set(URL "http://download.qt.io/archive/qt/5.14/5.14.0/single/qt-everywhere-src-5.14.0.tar.xz")
-	set(URL_HASH SHA256=be9a77cd4e1f9d70b58621d0753be19ea498e6b0da0398753e5038426f76a8ba)
+	set(URL "http://download.qt.io/archive/qt/5.15/5.15.5/single/qt-everywhere-opensource-src-5.15.5.tar.xz")
+	set(URL_HASH SHA256=5a97827bdf9fd515f43bc7651defaf64fecb7a55e051c79b8f80510d0e990f06)
     if(APPLE)
         set(OPTIONS
             -opensource;
             -confirm-license;
             -release;
             -no-compile-examples;
-            -no-openssl;
             -no-libproxy;
             -nomake tools;
             -nomake tests;
@@ -143,6 +142,7 @@ else()
 	endforeach()
 	file(COPY ${INSTALL_DIR}/plugins/ DESTINATION ${POST_INSTALL_DIR}/plugins/)
 	file(COPY ${INSTALL_DIR}/bin/moc DESTINATION ${POST_INSTALL_DIR}/bin/)
+	file(COPY ${INSTALL_DIR}/bin/rcc DESTINATION ${POST_INSTALL_DIR}/bin/)
 	")
 
     else()
@@ -152,7 +152,6 @@ else()
             -confirm-license;
             -release;
             -no-compile-examples;
-	    -no-openssl;
             -no-libproxy;
             -nomake tools;
             -nomake tests;
@@ -163,7 +162,7 @@ else()
             -qt-freetype;
             -qt-harfbuzz;
             -qt-pcre;
-            -qt-xcb;
+            -bundled-xcb-xinput
             -no-directfb;
             -no-linuxfb;
             -no-icu;
@@ -182,6 +181,7 @@ else()
 	endforeach()
 	file(COPY ${INSTALL_DIR}/plugins/ DESTINATION ${POST_INSTALL_DIR}/plugins/)
 	file(COPY ${INSTALL_DIR}/bin/moc DESTINATION ${POST_INSTALL_DIR}/bin/)
+	file(COPY ${INSTALL_DIR}/bin/rcc DESTINATION ${POST_INSTALL_DIR}/bin/)
 	")
     endif()
 endif()
