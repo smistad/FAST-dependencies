@@ -52,7 +52,7 @@ set(MODULES_TO_EXCLUDE
         -skip qtx11extras
         -skip qtxmlpatterns
         )
-set(LIBS 
+set(LIBS
 	Qt5Core
 	Qt5Gui
 	Qt5Widgets
@@ -64,6 +64,10 @@ set(LIBS
 	Qt5Network
 )
 if(WIN32)
+  set(OPENSSL_DIR "" CACHE PATH "OpenSSL dir")
+  if(OPENSSL_DIR STREQUAL "")
+    message( FATAL_ERROR "You must set OPENSSL_DIR when building Qt5 on windows" )
+  endif()
 	#set(BUILD_COMMAND set CL=/MP; nmake)
 	set(BUILD_COMMAND nmake)
 	set(CONFIGURE_COMMAND ${SOURCE_DIR}/configure.bat)
@@ -82,8 +86,10 @@ if(WIN32)
             -qt-libpng;
             -qt-libjpeg;
             -qt-freetype;
-            ${MODULES_TO_EXCLUDE}
+            ${MODULES_TO_EXCLUDE};
+            -openssl-linked OPENSSL_PREFIX=${OPENSSL_DIR};
 	)
+  message(${OPTIONS})
 	file(GENERATE OUTPUT ${INSTALL_DIR}package.cmake CONTENT "
 	file(GLOB FILES ${SOURCE_DIR}/LICENSE.*)
 	foreach(ARG $\{FILES\})
@@ -130,7 +136,7 @@ else()
             -no-icu;
             ${MODULES_TO_EXCLUDE}
         )
-	
+
 	file(GENERATE OUTPUT ${INSTALL_DIR}package.cmake CONTENT "
 	file(GLOB FILES ${SOURCE_DIR}/LICENSE.*)
 	foreach(ARG $\{FILES\})
@@ -169,7 +175,7 @@ else()
             -no-icu;
             ${MODULES_TO_EXCLUDE}
         )
-	
+
 	file(GENERATE OUTPUT ${INSTALL_DIR}package.cmake CONTENT "
 	file(GLOB FILES ${SOURCE_DIR}/LICENSE.*)
 	foreach(ARG $\{FILES\})
