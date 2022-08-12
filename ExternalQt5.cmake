@@ -1,6 +1,6 @@
 # Download and build Qt5
 
-create_package_target(qt5 5.15.5)
+create_package_target(qt5 5.15.2)
 
 # List of modules can be found in git repo here: github.com/qt/qt5
 set(MODULES_TO_EXCLUDE
@@ -112,8 +112,8 @@ if(WIN32)
 else()
 	set(BUILD_COMMAND make -j4)
 	set(CONFIGURE_COMMAND ${SOURCE_DIR}/configure)
-	set(URL "http://download.qt.io/archive/qt/5.15/5.15.5/single/qt-everywhere-opensource-src-5.15.5.tar.xz")
-	set(URL_HASH SHA256=5a97827bdf9fd515f43bc7651defaf64fecb7a55e051c79b8f80510d0e990f06)
+	set(URL "https://download.qt.io/archive/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz")
+	set(URL_HASH SHA256=3a530d1b243b5dec00bc54937455471aaa3e56849d2593edb8ded07228202240)
     if(APPLE)
         set(OPTIONS
             -opensource;
@@ -172,7 +172,8 @@ else()
             -no-directfb;
             -no-linuxfb;
             -no-icu;
-            ${MODULES_TO_EXCLUDE}
+            ${MODULES_TO_EXCLUDE};
+            -openssl-linked;
         )
 
 	file(GENERATE OUTPUT ${INSTALL_DIR}package.cmake CONTENT "
@@ -188,6 +189,11 @@ else()
 	file(COPY ${INSTALL_DIR}/plugins/ DESTINATION ${POST_INSTALL_DIR}/plugins/)
 	file(COPY ${INSTALL_DIR}/bin/moc DESTINATION ${POST_INSTALL_DIR}/bin/)
 	file(COPY ${INSTALL_DIR}/bin/rcc DESTINATION ${POST_INSTALL_DIR}/bin/)
+    file(GLOB installedSOs ${POST_INSTALL_DIR}/lib/*.so*)
+    foreach(SO $\{installedSOs\})
+        message(\"-- Setting runtime path of $\{SO\}\")
+        execute_process(COMMAND patchelf --set-rpath \"$ORIGIN/../lib\" $\{SO\})
+    endforeach()
 	")
     endif()
 endif()
