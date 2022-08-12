@@ -114,6 +114,7 @@ else()
             -confirm-license;
             -release;
             -no-compile-examples;
+            -securetransport;
             -no-libproxy;
             -nomake tools;
             -nomake tests;
