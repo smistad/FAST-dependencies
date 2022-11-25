@@ -2,6 +2,12 @@
 
 create_package_target(tiff 4.3.0)
 if(WIN32)
+create_package_code("
+	file(COPY ${INSTALL_DIR}/include/ DESTINATION ${POST_INSTALL_DIR}/include/)
+	file(COPY ${INSTALL_DIR}/bin/tiff.dll DESTINATION ${POST_INSTALL_DIR}/bin/)
+	file(COPY ${INSTALL_DIR}/lib/tiff.lib DESTINATION ${POST_INSTALL_DIR}/lib/)
+	file(COPY ${SOURCE_DIR}/COPYRIGHT DESTINATION ${POST_INSTALL_DIR}/licenses/${NAME}/)
+")
 ExternalProject_Add(tiff
         PREFIX ${BUILD_DIR}
         BINARY_DIR ${BUILD_DIR}
