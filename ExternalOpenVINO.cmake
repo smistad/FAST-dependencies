@@ -94,7 +94,7 @@ set(SO_FILES
 	libinference_engine_onnx_reader.so
 	libonnx_importer.dylib
 	libonnx_proto.dylib
-	libprotobuf.dylib
+	libprotobuf.3.7.1.0.dylib
 	libMKLDNNPlugin.so
 	libmyriadPlugin.so
 	libngraph.dylib
@@ -110,8 +110,16 @@ foreach(ARG ${SO_FILES})
    file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/$\{ARG\} DESTINATION ${POST_INSTALL_DIR}/lib/)
 endforeach()
 file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/lib/libtbb.dylib DESTINATION ${POST_INSTALL_DIR}/lib/)
+file(COPY ${SOURCE_DIR}/inference-engine/temp/tbb/lib/libtbbmalloc.dylib DESTINATION ${POST_INSTALL_DIR}/lib/)
 #file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/cache.json DESTINATION ${POST_INSTALL_DIR}/lib/)
 file(COPY ${SOURCE_DIR}/bin/intel64/Release/lib/plugins.xml DESTINATION ${POST_INSTALL_DIR}/lib/)
+file(GLOB installedSOs ${POST_INSTALL_DIR}/lib/*.dylib*)
+foreach(SO $\{installedSOs\})
+    message(\"-- Setting runtime path of $\{SO\}\")
+    execute_process(COMMAND install_name_tool -add_rpath \"@loader_path/../lib\" $\{SO\})
+endforeach()
+execute_process(COMMAND codesign --remove-signature ${POST_INSTALL_DIR}/lib/libtbb.dylib)
+execute_process(COMMAND codesign --remove-signature ${POST_INSTALL_DIR}/lib/libtbbmalloc.dylib)
 ")
 ExternalProject_Add(${NAME}
 	PREFIX ${BUILD_DIR}
