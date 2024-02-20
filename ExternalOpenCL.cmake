@@ -29,7 +29,7 @@ ExternalProject_Add(${NAME}_headers_cpp
 	PREFIX ${BUILD_DIR}
 	BINARY_DIR ${BUILD_DIR}
 	GIT_REPOSITORY "https://github.com/KhronosGroup/OpenCL-CLHPP.git"
-	GIT_TAG " v2.0.15"
+	GIT_TAG "v2.0.15"
 	GIT_PROGRESS 1
 	UPDATE_COMMAND ""
 	CONFIGURE_COMMAND ""

@@ -1,6 +1,6 @@
 # Build DCMTK
 
-create_package_target(dcmtk 3.6.3)
+create_package_target(dcmtk 3.6.7)
 if(WIN32)
 create_package_code(
 	"
