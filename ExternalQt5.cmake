@@ -71,8 +71,8 @@ if(WIN32)
 	#set(BUILD_COMMAND set CL=/MP; nmake)
 	set(BUILD_COMMAND nmake)
 	set(CONFIGURE_COMMAND ${SOURCE_DIR}/configure.bat)
-	set(URL "http://download.qt.io/archive/qt/5.15/5.15.5/single/qt-everywhere-opensource-src-5.15.5.zip")
-	set(URL_HASH SHA256=08ed914924330b99412068eb66301c455291af9eba33e499acff97ef474e5309)
+	set(URL "https://download.qt.io/archive/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.zip")
+	set(URL_HASH SHA256=6c5d37aa96f937eb59fd4e9ce5ec97f45fbf2b5de138b086bdeff782ec661733)
 	set(OPTIONS
             -opensource;
             -confirm-license;
