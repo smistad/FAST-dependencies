@@ -48,6 +48,7 @@ include(ExternalTensorflow.cmake)
 include(ExternalLibJPEG.cmake)
 include(ExternalTIFF.cmake)
 include(ExternalOpenSlide.cmake)
+include(ExternalJPEGXL.cmake)
 
 file(GENERATE OUTPUT ${PROJECT_BINARY_DIR}/hasher.cmake CONTENT "
 	foreach(ARG ${ALL_PACKAGES})
