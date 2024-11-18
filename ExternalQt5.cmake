@@ -1,7 +1,11 @@
 # Download and build Qt5
 
-if(APPLE AND ${CMAKE_OSX_ARCHITECTURES} STREQUAL "arm64")
+if(APPLE)
+if(${CMAKE_OSX_ARCHITECTURES} STREQUAL "arm64")
 create_package_target(qt5 5.15.8)
+else()
+create_package_target(qt5 5.15.2)
+endif()
 else()
 create_package_target(qt5 5.15.2)
 endif()
