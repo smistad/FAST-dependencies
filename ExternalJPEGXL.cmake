@@ -2,6 +2,25 @@
 
 create_package_target(jpegxl 0.11.0)
 if(WIN32)
+file(GENERATE OUTPUT ${INSTALL_DIR}package.cmake CONTENT "
+	file(COPY ${INSTALL_DIR}/include/jxl DESTINATION ${POST_INSTALL_DIR}/include/)
+	file(GLOB FILES ${BUILD_DIR}/LICENSE.*)
+	foreach(ARG $\{FILES\})
+	    file(COPY $\{ARG\} DESTINATION ${POST_INSTALL_DIR}/licenses/jpegxl/)
+	endforeach()
+
+	file(GLOB LIBS ${INSTALL_DIR}/lib/*.lib)
+	foreach(ARG $\{LIBS\})
+	    if(NOT $\{ARG\} MATCHES \"hwy.lib$\") # Static lib, no need
+	         file(COPY $\{ARG\} DESTINATION ${POST_INSTALL_DIR}/lib/)
+	    endif()
+	endforeach()
+	file(GLOB DLLS ${INSTALL_DIR}/bin/*.dll)
+	foreach(ARG $\{DLLS\})
+	    file(COPY $\{ARG\} DESTINATION ${POST_INSTALL_DIR}/bin/)
+	endforeach()
+	")
+elseif(APPLE)
 else()
 file(GENERATE OUTPUT ${INSTALL_DIR}package.cmake CONTENT "
 	file(COPY ${INSTALL_DIR}/include/jxl DESTINATION ${POST_INSTALL_DIR}/include/)
