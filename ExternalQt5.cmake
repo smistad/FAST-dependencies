@@ -1,7 +1,7 @@
 # Download and build Qt5
 
 if(APPLE)
-if(${CMAKE_OSX_ARCHITECTURES} STREQUAL "arm64")
+if("${CMAKE_OSX_ARCHITECTURES}" STREQUAL "arm64")
 create_package_target(qt5 5.15.8)
 else()
 create_package_target(qt5 5.15.2)
@@ -123,7 +123,7 @@ else()
 	set(URL "https://download.qt.io/archive/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz")
 	set(URL_HASH SHA256=3a530d1b243b5dec00bc54937455471aaa3e56849d2593edb8ded07228202240)
     if(APPLE)
-	if(${CMAKE_OSX_ARCHITECTURES} STREQUAL "arm64")
+	if("${CMAKE_OSX_ARCHITECTURES}" STREQUAL "arm64")
 		# Have to use newer for apple silicon, however pyside2 only supports 5.15.2
 		set(URL "http://download.qt.io/archive/qt/5.15/5.15.8/single/qt-everywhere-opensource-src-5.15.8.tar.xz")
 		set(URL_HASH SHA256=776a9302c336671f9406a53bd30b8e36f825742b2ec44a57c08217bff0fa86b9)
