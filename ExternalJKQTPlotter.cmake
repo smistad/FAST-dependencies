@@ -1,6 +1,6 @@
 # Build JKQTPlotter
 
-create_package_target(jkqtplotter 2020.10)
+create_package_target(jkqtplotter 4.0.3)
 if(WIN32)
 create_package_code(
 	"
@@ -36,11 +36,11 @@ create_package_code(
 endif()
 
 ExternalProject_Add(${NAME}
-        DEPENDS qt5
+        DEPENDS qt6
 	PREFIX ${BUILD_DIR}
 	BINARY_DIR ${BUILD_DIR}
         GIT_REPOSITORY "https://github.com/jkriege2/JKQtPlotter.git"
-        GIT_TAG "fc7622e901cec7ed68abe6b2d95ea20ce30490ed"
+        GIT_TAG "v4.0.3"
 	GIT_PROGRESS 1
         UPDATE_COMMAND "" # Hack to avoid rebuild all the time on linux
         CMAKE_ARGS
@@ -50,7 +50,7 @@ ExternalProject_Add(${NAME}
           -DJKQtPlotter_BUILD_STATIC_LIBS=OFF
           -DJKQtPlotter_BUILD_SHARED_LIBS=ON
         CMAKE_CACHE_ARGS
-          -DQt5_DIR:STRING=${TOP_BUILD_DIR}/qt5/install/lib/cmake/Qt5/
+          -DQT_DIR:STRING=${TOP_BUILD_DIR}/qt6/install/lib/cmake/Qt6/
           -DCMAKE_BUILD_TYPE:STRING=Release
           -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF
           -DCMAKE_INSTALL_MESSAGE:BOOL=LAZY
