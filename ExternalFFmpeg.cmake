@@ -48,7 +48,7 @@ else()
 		file(COPY $\{ARG\} DESTINATION ${POST_INSTALL_DIR}/licenses/ffmpeg/)
 	endforeach()
 
-	file(GLOB LIBS ${INSTALL_DIR}/lib/*.so)
+	file(GLOB LIBS ${INSTALL_DIR}/lib/*.so*)
 	foreach(ARG $\{LIBS\})
 	    file(COPY $\{ARG\} DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
 	endforeach()

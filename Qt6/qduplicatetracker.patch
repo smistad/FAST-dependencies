@@ -1,0 +1,9 @@
+@@ -3,6 +3,8 @@
+ #ifndef QDUPLICATETRACKER_P_H
+ #define QDUPLICATETRACKER_P_H
+ 
++#undef __cpp_lib_memory_resource
++
+ //
+ //  W A R N I N G
+ //  -------------

@@ -50,7 +50,7 @@ ExternalProject_Add(${NAME}
           -DJKQtPlotter_BUILD_STATIC_LIBS=OFF
           -DJKQtPlotter_BUILD_SHARED_LIBS=ON
         CMAKE_CACHE_ARGS
-          -DQT_DIR:STRING=${TOP_BUILD_DIR}/qt6/install/lib/cmake/Qt6/
+          -DQt6_DIR:STRING=${TOP_BUILD_DIR}/qt6/install/lib/cmake/Qt6/
           -DCMAKE_BUILD_TYPE:STRING=Release
           -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF
           -DCMAKE_INSTALL_MESSAGE:BOOL=LAZY

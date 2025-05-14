@@ -1,0 +1,14 @@
+@@ -14,6 +14,13 @@
+ #include <qsocketnotifier.h>
+ #include <qloggingcategory.h>
+ 
++#ifndef V4L2_PIX_FMT_RGBA32
++#define V4L2_PIX_FMT_RGBA32  v4l2_fourcc('A', 'B', '2', '4') /* 32  RGBA-8-8-8-8  */
++#endif
++#ifndef V4L2_PIX_FMT_BGRA32
++#define V4L2_PIX_FMT_BGRA32  v4l2_fourcc('R', 'A', '2', '4') /* 32  ABGR-8-8-8-8  */
++#endif
++
+ QT_BEGIN_NAMESPACE
+ 
+ Q_STATIC_LOGGING_CATEGORY(qLcV4L2Camera, "qt.multimedia.ffmpeg.v4l2camera");

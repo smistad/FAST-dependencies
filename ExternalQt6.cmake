@@ -203,7 +203,20 @@ else()
 	file(COPY ${INSTALL_DIR}/bin/rcc DESTINATION ${POST_INSTALL_DIR}/bin/)
 	")
 
-    else()
+	else() # ===========> LINUX
+	    # For Linux Qt 6 requires at least GCC version 9.2 to compile
+	    if(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.2)
+		message(FATAL_ERROR "GCC version must be at least 9.2 to build Qt 6")
+	    endif()
+            # In order to successfully compile Qt 6 on Ubuntu 18.04 a few minor patches are needed (see PATCH_COMMAND)
+	    # The first patch simply removes the need for pulseaudio when FFmpeg is enabled. While not necessary to compile, this reduces the amount of system dependencies + we don't need audio support
+	    # The second patch adds some video 4 linux defines which are missing on Ubuntu 18.04
+	    # The third patch avoids the use of std::pmr::monotonic which requires GLIBCXX 3.4.26 (C++ standard library).
+	    # This version is not available by default on Ubuntu 18.04
+	    set(PATCH_COMMAND 
+		    patch ${SOURCE_DIR}/qtmultimedia/src/multimedia/configure.cmake ${PROJECT_SOURCE_DIR}/Qt6/multimedia_configure.patch COMMAND
+		    patch ${SOURCE_DIR}/qtmultimedia/src/plugins/multimedia/ffmpeg/qv4l2camera.cpp ${PROJECT_SOURCE_DIR}/Qt6/v4l.patch COMMAND
+		    patch ${SOURCE_DIR}/qtbase/src/corelib/tools/qduplicatetracker_p.h ${PROJECT_SOURCE_DIR}/Qt6/qduplicatetracker.patch)
 	# Linux
         set(OPTIONS
             -opensource;
@@ -224,12 +237,11 @@ else()
 	    -submodules ${MODULES_STRING};
             ${MODULES_TO_EXCLUDE};
             -openssl-linked;
-	    #-feature-pulseaudio;
-	    -feature-ffmpeg;
+	    -c++std c++17;
+	    -no-feature-pulseaudio;
+	    -feature-ffmpeg; 
 	    -ffmpeg-dir ${TOP_BUILD_DIR}/ffmpeg/install/;
-	    -DQT_BUILD_EXAMPLES_BY_DEFAULT=OFF;
-	    -DQT_BUILD_TESTS_BY_DEFAULT=OFF;
-	    -DQT_BUILD_TOOLS_BY_DEFAULT=OFF;
+	    -- -DQT_BUILD_EXAMPLES_BY_DEFAULT=OFF -DQT_BUILD_TESTS_BY_DEFAULT=OFF -DQT_BUILD_TOOLS_BY_DEFAULT=OFF
         )
 
 	file(GENERATE OUTPUT ${INSTALL_DIR}package.cmake CONTENT "
@@ -250,23 +262,31 @@ else()
         message(\"-- Setting runtime path of $\{SO\}\")
         execute_process(COMMAND patchelf --set-rpath \"$ORIGIN/../lib\" $\{SO\})
     endforeach()
+    # Copy FFmpeg files to multimedia plugins folder
+    file(GLOB LIBS ${TOP_BUILD_DIR}/ffmpeg/post_install/ffmpeg/lib/*.so*)
+	foreach(ARG $\{LIBS\})
+	    file(COPY $\{ARG\} DESTINATION ${POST_INSTALL_DIR}/lib/ FOLLOW_SYMLINK_CHAIN)
+	endforeach()
+	file(COPY ${TOP_BUILD_DIR}/ffmpeg/post_install/ffmpeg/licenses/ffmpeg DESTINATION ${POST_INSTALL_DIR}/licenses/)
+	file(COPY ${TOP_BUILD_DIR}/ffmpeg/post_install/ffmpeg/src DESTINATION ${POST_INSTALL_DIR}/)
 	")
     endif()
 endif()
 
+
 ExternalProject_Add(${NAME}
-	DEPENDS ffmpeg
+	DEPENDS ffmpeg_package
 	PREFIX ${BUILD_DIR}
 	BINARY_DIR ${BUILD_DIR}
         URL ${URL}
         URL_HASH ${URL_HASH}
+	PATCH_COMMAND 
+		${PATCH_COMMAND}
         CONFIGURE_COMMAND
-            ${CONFIGURE_COMMAND}
-	    -prefix ${INSTALL_DIR};
-            ${OPTIONS}
+		${CONFIGURE_COMMAND} -prefix ${INSTALL_DIR} ${OPTIONS}
         BUILD_COMMAND
-            ${BUILD_COMMAND}
+		${CMAKE_COMMAND} --build . --parallel
         INSTALL_COMMAND
-            ${BUILD_COMMAND} install
+		${CMAKE_COMMAND} --install .
 
 )
